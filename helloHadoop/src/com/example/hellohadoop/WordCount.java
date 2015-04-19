@@ -55,6 +55,7 @@ public class WordCount {
       System.err.println("Usage: wordcount <in> [<in>...] <out>"); // hdfs://localhost:8020/input hdfs://localhost:8020/output
       System.exit(2);
     }
+    //add comment here.
 
     // https://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html
     // Create a new Job
