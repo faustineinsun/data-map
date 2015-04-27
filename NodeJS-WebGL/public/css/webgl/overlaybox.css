@@ -1,45 +1,97 @@
-body {
-    background:#000;
-    color:#fff;
-    padding:0;
-    margin:0;
-    overflow:hidden;
-    font-family:georgia;
-    text-align:center;
-}
-a {
-    color: #ff0080;
-    text-decoration: none;
-}
-a:hover {
-    color: #0080ff;
-}
-canvas {
-    pointer-events:none;
-    z-index:10;
-}
-bottomtext {
-    left: 0;
-    position: fixed;
-    text-align: center;
-    bottom: 0;
-    width: 100%;
-}
-#infobox {
-    text-align: center;
-    margin: 1em auto -9.5em;
-    z-index: 200;
+@import url(http://fonts.googleapis.com/css?family=Roboto:300,400,700);
+@import url(http://cdn.cloudcache.dk/materialize/0.95.3/css/materialize-fonts.css);
+
+.floating-item-container {
     position: absolute;
-    display: block;
-    background: rgba(255, 0, 174, 0.64);
-    padding: 0.5em;
-    width: 280px;
-    height: 500px;
-    right: 1em;
-    border-radius: 15px;
-    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    padding: 1px;
+    width: 40px;
+    height: 40px;
+    right: 5px;
+    top: 5px;
 }
-#oldie {
-    margin-top:15em !important
+.floating-item-container2 {
+    position: absolute;
+    padding: 1px;
+    width: 40px;
+    height: 40px;
+    right: 5px;
+    top: 50px;
 }
 
+.button-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.button-container>.btn {
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    max-width: 1000px;
+    max-height: 1000px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.button-container>.btn2 {
+    position: absolute;
+    right: 5px;
+    top: 0px;
+}
+
+.btn-float {
+    width: 35px;
+    height: 35px;
+    background: rgba(255, 64, 129, 0.88);
+    border: none;
+    outline: 0;
+    border-radius: 50%;
+    color: #eee;
+    text-align: center;
+    letter-spacing: 0.5px;
+    padding: 0;
+    line-height: 35px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.btn-float i { font-size: 1.6rem;}
+
+.button-container.open>.btn:before { display: none; }
+.button-container.open>.btn2:before { display: none; }
+
+.modal {
+    z-index: 200;
+    display: none;
+    position: absolute;
+    width: 280px;
+    height: 500px;
+    top: 10px;
+    right: 60px;
+    color: #eee;
+}
+
+.modal>.modal-content {
+    width: 100%;
+    height: 100%;
+    top:100%;
+    right:100%;
+    padding: 6px;
+    background: rgba(255, 64, 129, 0.8);
+    text-align: center;
+    border-radius: 10px;
+}
+
+.modal>.close {
+  display: inline-block;
+  position: relative;
+  margin: 0px;
+  right: 0px;
+  width: 100%;
+  text-align: right;
+  float: right;
+  font-size: 1.2rem;
+  line-height: 35px;
+  color: rgba(0,0,0,0.37);
+}
+
+.modal>.close:hover { cursor: pointer; }
