@@ -19,4 +19,6 @@ sudo apt-get install npm
 sudo ln -s /usr/bin/nodejs /usr/bin/node
 # install Heroku
 sudo wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+# install htop
+sudo apt-get install htop
 
