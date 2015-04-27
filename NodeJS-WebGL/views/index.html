@@ -1,71 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>FB Instant Social Graph</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="an app showing instant social graph on one's Facebook">
-        <meta name="author" content="faustineinsun">
+<head>
+    <meta charset="utf-8">
+    <title>FB Instant Social Graph</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="an app showing instant social graph on one's Facebook">
+    <meta name="author" content="faustineinsun">
 
-        <!--link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /-->
-        <!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
-        <!--script src="js/less-1.3.3.min.js"></script-->
-        <!--append ‘#!watch’ to the browser URL, then refresh the page. -->
+    <!--bootstrap-->
+    <!-- Latest compiled and minified CSS -->
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script-->
 
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <!--link href="css/bootstrap.min.css" rel="stylesheet"-->
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-        <link href="css/style.css" rel="stylesheet">
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="img/favicon.png">
 
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-        <![endif]-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
 
-        <!-- Fav and touch icons -->
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
-        <link rel="shortcut icon" href="img/favicon.png">
+    <link href="css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/scalaJS/example-opt.js"></script>
+    <script type="text/javascript" src="js/fb/login.js"></script>
 
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <!--script type="text/javascript" src="js/bootstrap.min.js"></script-->
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/scripts.js"></script>
-        <script type="text/javascript" src="js/scalaJS/example-opt.js"></script>
-        <script type="text/javascript" src="js/fb/login.js"></script>
+    <!-- WebGL -->
+    <link href="css/webgl/overlaybox.css" rel="stylesheet">
+    <script src="http://threejs.org/build/three.min.js"></script>
+    <script type="text/javascript" src="js/webgl/simplewebgl.js"></script>
+    <script type="text/javascript" src="js/webgl/clickinfobox.js"></script>
 
-        <!-- WebGL -->
-        <link href="css/webgl/overlaybox.css" rel="stylesheet">
-        <script src="http://threejs.org/build/three.min.js"></script>
-        <script type="text/javascript" src="js/webgl/simplewebgl.js"></script>
-    </head>
+</head>
 
-    <body>
-        <div id="fb-root"></div>
+<body>
+    <div id="fb-root"></div>
 
-        <div id="infobox">
-            <center>
-                <div class="fb-login-button" data-max-rows="5" data-size="medium" data-show-faces="true" data-auto-logout-link="true"></div>
-            </center>
+        <div class="floating-item-container">
+            <div class="button-container"> <a href="#" class="btn btn-float "> <i class="mdi-social-people-outline"></i> </a> </div>
+            <div class="modal"> <a href="#" class="close"> <i class="mdi-navigation-close"></i> </a>
+                <div class="modal-content">
+                    Social Info
+                    <div class="fb-login-button" data-max-rows="5" data-size="medium" data-show-faces="true" data-auto-logout-link="true"></div>
+                </div>
+            </div>
         </div>
 
-        <!-- WebGL -->
-        <script>
-            init();
-            animate();
-        </script>
+        <div class="floating-item-container2">
+            <div class="button-container"> <a href="#" class="btn2 btn-float "> <i class="mdi-image-palette"></i> </a> </div>
+            <div class="modal"> <a href="#" class="close"> <i class="mdi-navigation-close"></i> </a>
+                <div class="modal-content">
+                    Color Palette
+                </div>
+            </div>
+        </div>
 
-        <bottomtext>
+    </div>
+
+    <!-- WebGL -->
+    <script>
+        init();
+        animate();
+    </script>
+
+    <bottomtext>
         <center>
             <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
             <br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
             <br><br>
         </center>
-        </bottomtext>
+    </bottomtext>
 </body>
 </html>
