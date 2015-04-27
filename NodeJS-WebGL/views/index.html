@@ -2,9 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Tardigrade: AI Learning Hub</title>
+        <title>FB Instant Social Graph</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="AI Learning Hub">
+        <meta name="description" content="an app showing instant social graph on one's Facebook">
         <meta name="author" content="faustineinsun">
 
         <!--link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /-->
@@ -37,69 +37,35 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/scripts.js"></script>
         <script type="text/javascript" src="js/scalaJS/example-opt.js"></script>
+        <script type="text/javascript" src="js/fb/login.js"></script>
+
+        <!-- WebGL -->
+        <link href="css/webgl/overlaybox.css" rel="stylesheet">
+        <script src="http://threejs.org/build/three.min.js"></script>
+        <script type="text/javascript" src="js/webgl/simplewebgl.js"></script>
     </head>
 
     <body>
-        <script>
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId      : '1583804698566448',
-                    xfbml      : true,
-                    version    : 'v2.3'
-                });
-            };
+        <div id="fb-root"></div>
 
-            (function(d, s, id){
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {return;}
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
+        <div id="infobox">
+            <center>
+                <div class="fb-login-button" data-max-rows="5" data-size="medium" data-show-faces="true" data-auto-logout-link="true"></div>
+            </center>
+        </div>
+
+        <!-- WebGL -->
+        <script>
+            init();
+            animate();
         </script>
 
-        <div class="container">
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">Game Zone</a>
-                    </div>
-                    </nav>
-
-                    <br><br><br>
-                    <div class="fb-like" data-share="true" data-width="450" data-show-faces="false"> </div>
-                    <br><br>
-
-                    <div class="alert alert-success alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4>
-                            It's game time!
-                    </h4> Have fun with this simple Flappy Bird game =)</a>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-md-12 column">
-                        <!--install workbench https://github.com/lihaoyi/workbench which is an addon of scala.js that can restart the app when a new compilation run finishes, and show debug log in the Chrome console-->
-                        <!--script type="text/javascript" src="/workbench.js"></script-->
-                        <canvas style="display: block" id="flcanvas" />
-                        <script>
-                            canvasapp.FlappyLine().main(document.getElementById('flcanvas'));
-                        </script>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br> <br> <br> <br> <br>
-        <div class="row clearfix">
-            <div class="col-md-12 column">
-                <center>
-                    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
-                    <br>
-                    <br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-                </center>
-            </div>
-            <br> <br> <br> <br> <br>
-        </div>
-    </div>
+        <bottomtext>
+        <center>
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
+            <br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+            <br><br>
+        </center>
+        </bottomtext>
 </body>
 </html>
