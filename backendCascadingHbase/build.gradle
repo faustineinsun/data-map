@@ -1,0 +1,112 @@
+import java.text.SimpleDateFormat
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+configurations {
+  providedCompile
+}
+
+sourceSets {
+  main.compileClasspath += [configurations.providedCompile]
+}
+
+task mappings {
+  conf2ScopeMappings.addMapping( 0, configurations.providedCompile, Conf2ScopeMappingContainer.PROVIDED )
+}
+
+javadoc {
+  classpath += [configurations.providedCompile]
+}
+
+eclipse {
+    classpath{
+        plusConfigurations += [configurations.providedCompile]
+    }
+}
+
+archivesBaseName = 'backend'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  maven{ url 'http://conjars.org/repo/' }
+}
+
+ext.cascadingVersion = '2.6.1'
+ext.hadoopVersion = '2.4.1'
+ext.slf4jVersion = '1.7.5'
+ext.javaVersion = '1.6'
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+
+dependencies {
+  compile( group: 'cascading', name: 'cascading-core', version: cascadingVersion )
+  compile( group: 'cascading', name: 'cascading-local', version: cascadingVersion )
+  compile( group: 'cascading', name: 'cascading-hadoop2-mr1', version: cascadingVersion )
+  compile( group: 'driven',    name: 'driven-plugin', version: '1.1.1', classifier:'io') 
+
+  providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: hadoopVersion )
+  providedCompile( group: 'org.apache.hadoop', name: 'hadoop-common', version: hadoopVersion )
+  providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-jobclient', version: hadoopVersion )
+  providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-shuffle', version: hadoopVersion )
+  providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-common', version: hadoopVersion )
+  providedCompile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+  providedCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
+  
+  testCompile group: 'cascading', name: 'cascading-platform', version: cascadingVersion, classifier: 'tests'
+  testCompile group: 'cascading', name: 'cascading-hadoop2-mr1', version: cascadingVersion, classifier: 'tests'
+  testCompile group: 'cascading', name: 'cascading-core', version: cascadingVersion, classifier: 'tests'
+  
+  testCompile group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: hadoopVersion
+  testCompile group: 'org.apache.hadoop', name: 'hadoop-minicluster', version: hadoopVersion
+  testCompile group: 'junit', name: 'junit', version: '4.11'
+  testCompile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+  testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
+}
+
+jar {
+  description = "Assembles a Hadoop ready jar file"
+  doFirst {
+    into( 'lib' ) {
+      from configurations.compile
+    }
+  }
+
+  manifest {
+    attributes( "Main-Class": "com/hh/cascading/Main" )
+  }
+}
+
+task distCopy( type: Copy, dependsOn: jar ) {
+  into "${buildDir}/dist/${archivesBaseName}"
+
+  from 'README.md'
+  from 'build.gradle'
+  from( 'src' ) {into 'src'}
+  from( 'data' ) {into 'data'}
+
+  from "$buildDir/libs"
+}
+
+task dist( type: Tar, dependsOn: distCopy ) {
+  compression = "GZIP"
+  classifier = new SimpleDateFormat( "yyyyMMdd" ).format( new Date() )
+
+  from "${buildDir}/dist/"
+}
+
+test {
+  include 'com/hh/cascading/**'
+  testLogging.showStandardStreams = true // show log in console
+
+  beforeTest { descriptor ->
+     logger.lifecycle("Running test: " + descriptor)
+  }
+  onOutput { descriptor, event ->
+     logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+  }
+}
+
