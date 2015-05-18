@@ -1,8 +1,14 @@
 import java.text.SimpleDateFormat
 
-apply plugin: 'maven'
 apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-maven'
+apply plugin: 'propdeps-idea'
+apply plugin: 'propdeps-eclipse'
+
+archivesBaseName = 'backend'
 
 configurations {
   providedCompile
@@ -20,13 +26,14 @@ javadoc {
   classpath += [configurations.providedCompile]
 }
 
-eclipse {
-    classpath{
-        plusConfigurations += [configurations.providedCompile]
+buildscript {
+    repositories {
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.5'
     }
 }
-
-archivesBaseName = 'backend'
 
 repositories {
   mavenLocal()
@@ -38,6 +45,7 @@ ext.cascadingVersion = '2.6.1'
 ext.hadoopVersion = '2.4.1'
 ext.slf4jVersion = '1.7.5'
 ext.javaVersion = '1.6'
+ext.redshiftVersion = '2.6.0'
 
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
@@ -47,8 +55,11 @@ dependencies {
   compile( group: 'cascading', name: 'cascading-local', version: cascadingVersion )
   compile( group: 'cascading', name: 'cascading-hadoop2-mr1', version: cascadingVersion )
   compile( group: 'driven',    name: 'driven-plugin', version: '1.1.1', classifier:'io') 
+  compile( group: 'cascading', name: 'cascading-jdbc-redshift', version: redshiftVersion )
+  compile( group: 'org.postgresql', name: 'postgresql', version: '9.4-1201-jdbc41')
 
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: hadoopVersion )
+  providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client', version: hadoopVersion )
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-common', version: hadoopVersion )
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-jobclient', version: hadoopVersion )
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-shuffle', version: hadoopVersion )
@@ -76,7 +87,8 @@ jar {
   }
 
   manifest {
-    attributes( "Main-Class": "com/hh/cascading/Main" )
+    //attributes( "Main-Class": "com/hh/cascading/Main" )
+    attributes( "Main-Class": "com/hh/cascading/aws/SampleFlow" )
   }
 }
 
