@@ -10,3 +10,5 @@
 *bin/
 *build/
 *.gradle/
+*cascading-aws-data/
+*output/
