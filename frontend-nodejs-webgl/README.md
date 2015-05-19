@@ -1,13 +1,17 @@
 - Template from [https://github.com/faustineinsun/scalaJS-playground](https://github.com/faustineinsun/scalaJS-playground)
 
-##### On local [http://localhost:5000/](http://localhost:5000/)
+### On local [http://localhost:5000/](http://localhost:5000/)
 
 ```
 $ npm install
 $ foreman start web 
 ```
 
-##### Submit modifications
+### On remote machine
+
+* [AWS EC2](http://ec2-52-6-112-107.compute-1.amazonaws.com:5000/)
+
+### Submit modifications
 
 * Fetch data from `main-repo-master-branch` to `your-repo-master-branch`
 
