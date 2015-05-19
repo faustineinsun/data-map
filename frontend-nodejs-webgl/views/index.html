@@ -20,22 +20,49 @@
     <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
     <link href="css/style.css" rel="stylesheet">
     <script type="text/javascript" src="js/scripts.js"></script>
     <script type="text/javascript" src="js/scalaJS/example-opt.js"></script>
     <script type="text/javascript" src="js/fb/login.js"></script>
 
-    <!-- WebGL -->
-    <link href="css/webgl/overlaybox.css" rel="stylesheet">
-    <script src="http://threejs.org/build/three.min.js"></script>
-    <script type="text/javascript" src="js/webgl/simplewebgl.js"></script>
-    <script type="text/javascript" src="js/webgl/clickinfobox.js"></script>
 
+    <!-- WebGL -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script type="text/javascript" src="js/third-party-lib/leaflet-hash.js"></script>
+    <script src="https://mapzen.com/tangram/0.1/tangram.min.js"></script>
+    <script src="http://threejs.org/build/three.min.js"></script>
+
+    <link href="css/webgl/overlaybox.css" rel="stylesheet">
+    <link href="css/webgl/webglmap.css" rel="stylesheet">
+
+    <script type="text/javascript" src="js/webgl/clickinfobox.js"></script>
 </head>
 
 <body>
+    <!-- WebGL -->
+
+    <!--example 1-->
+    <!--script type="text/javascript" src="js/webgl/rollingrectangle.js"></script>
+    <script>
+        init();
+        animate();
+    </script-->
+
+    <!--example 2: Tangram API, simple demo from https://github.com/tangrams/simple-demo-->
+    <div id="map" class="leaflet-container leaflet-fade-anim"></div>
+    <script type="text/javascript" src="js/webgl/webglmaptangram.js"></script>
+    <script type="text/javascript">
+        window.addEventListener("hashchange",function(){parent.postMessage(window.location.hash, "*")});
+    </script>
+
+    <!--End of WebGL-->
+
+
+    <!--panel-->
     <div id="fb-root"></div>
 
         <div class="floating-item-container">
@@ -58,12 +85,7 @@
         </div>
 
     </div>
-
-    <!-- WebGL -->
-    <script>
-        init();
-        animate();
-    </script>
+    <!--End of panel-->
 
     <bottomtext>
         <center>
