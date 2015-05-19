@@ -1,7 +1,7 @@
 /**
  * Learn from http://docs.cascading.org/tutorials/cascading-aws/part3.html
  */
-package com.hh.cascading.aws;
+package com.learndemo.cascading.aws;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

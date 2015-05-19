@@ -1,8 +1,10 @@
-package com.hh.cascading;
+package com.learndemo.cascading;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.learndemo.cascading.ScrubFunction;
 
 import cascading.tuple.Fields;
 
