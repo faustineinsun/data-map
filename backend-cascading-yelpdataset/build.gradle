@@ -87,8 +87,9 @@ jar {
   }
 
   manifest {
-    //attributes( "Main-Class": "com/hh/cascading/Main" )
-    attributes( "Main-Class": "com/hh/cascading/aws/SampleFlow" )
+    //attributes( "Main-Class": "com/learndemo/cascading/Main" )
+    //attributes( "Main-Class": "com/learndemo/cascading/aws/SampleFlow" )
+    attributes( "Main-Class": "com/yelpdatasetchallenge/cascading/DataAnalysisMain" )
   }
 }
 
@@ -111,7 +112,8 @@ task dist( type: Tar, dependsOn: distCopy ) {
 }
 
 test {
-  include 'com/hh/cascading/**'
+  //include 'com/learndemo/cascading/**'
+  include 'com/yelpdatasetchallenge/cascading/**'
   testLogging.showStandardStreams = true // show log in console
 
   beforeTest { descriptor ->
