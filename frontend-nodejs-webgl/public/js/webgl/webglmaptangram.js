@@ -5,6 +5,6 @@ var layer = Tangram.leafletLayer({
 });
 
 layer.addTo(map);
-map.setView([37.7749300, -122.4194200], 14);
+map.setView([37.7871,-122.4247], 14);
 
 var hash = new L.Hash(map);
