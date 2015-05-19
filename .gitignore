@@ -12,3 +12,5 @@
 *.gradle/
 *cascading-aws-data/
 *output/
+*dot/
+*data/
