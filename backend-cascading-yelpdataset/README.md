@@ -63,3 +63,13 @@ Note that WARNINGs are shown in Eclipse
 (master) sudo start-hbase.sh
 ```
 
+##### Install Redis
+
+```
+$ brew update
+$ brew doctor
+$ brew install redis
+$ ln -sfv /usr/local/opt/redis/homebrew.mxcl.redis.plist /Library/LaunchAgents/
+$ lunchy start redis 
+$ lunchy stop redis 
+```
