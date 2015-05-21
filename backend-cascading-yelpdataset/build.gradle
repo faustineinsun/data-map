@@ -57,6 +57,8 @@ dependencies {
   compile( group: 'driven',    name: 'driven-plugin', version: '1.1.1', classifier:'io') 
   compile( group: 'cascading', name: 'cascading-jdbc-redshift', version: redshiftVersion )
   compile( group: 'org.postgresql', name: 'postgresql', version: '9.4-1201-jdbc41')
+  compile( group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.5.2')
+  compile( group: 'redis.clients', name: 'jedis', version: '2.7.2')
 
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: hadoopVersion )
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client', version: hadoopVersion )
