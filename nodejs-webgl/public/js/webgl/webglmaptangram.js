@@ -11,6 +11,7 @@ map.setView([36.1348,-115.0344], 11); // State NV in USA
 
 var hash = new L.Hash(map);
 
+var busineslayer; 
 
 // Geojson on Leaflet
 // reference http://leafletjs.com/examples/geojson.html 
@@ -31,7 +32,7 @@ function showYelpDataGeoJSONOverlay(geojsonfile) {
     var businessLocation=JSON.parse(geojsonfile);
 
     //console.log(geojsonfile);
-    L.geoJson(businessLocation, {
+    busineslayer = L.geoJson(businessLocation, {
         style: function (feature) {
                    return feature.properties && feature.properties.style;
                },
@@ -49,7 +50,11 @@ function showYelpDataGeoJSONOverlay(geojsonfile) {
             });
         }
     }).addTo(map);
+}
 
+function clearLayer(){
+    console.log("clean layer "+busineslayer);
+    map.removeLayer(busineslayer);
 }
 
 
