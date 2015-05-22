@@ -37,7 +37,7 @@ $ vim views/index.html
 $ vim public/js/webgl/webglmaptangram.js
 $ vim public/css/webgl/webglmap.css
 $ vim public/assets/scene.yaml
-$ vim public/assets/json/analyzeddata-final.json
+$ vim public/assets/yelpgeojson/analyzeddata-final.json
 ```
 
 * Submit modifications
