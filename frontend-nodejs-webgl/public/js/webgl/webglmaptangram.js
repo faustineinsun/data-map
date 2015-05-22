@@ -10,10 +10,52 @@ map.setView([39.7357,-104.9992], 14);
 
 var hash = new L.Hash(map);
 
+// Geojson on Leaflet
+
+function onEachFeature(feature, layer) {
+    var popupContent = "<p><b>" + feature.properties.businessName +"</b></p>"
+        +"<b>Address</b>: " +feature.properties.businessAddress
+        +"<br><b>Latitude and Longitude</b>: " + feature.geometry.coordinates
+        +"<br><b>Categories</b>: " +feature.properties.businessCategories
+        +"<br>In time window <b>"+feature.properties.timeWindow+"</b> there are <b>"+feature.properties.checkInCountTimeWindow + "</b> check-in count";
+
+    layer.bindPopup(popupContent);
+}
+
+//$.getJSON("assets/yelpgeojson/businessFeatureClctn.json", function(json) {
+$.getJSON("assets/yelpgeojson/businessFeatureClctn_CA.json", function(json) {
+    var businessLocation=json;
+
+    //console.log(json);
+    L.geoJson(businessLocation, {
+        style: function (feature) {
+                   return feature.properties && feature.properties.style;
+               },
+
+        onEachFeature: onEachFeature,
+
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+                radius: 8,
+            fillColor: "#FF00E1",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+            });
+        }
+    }).addTo(map);
+});
+
+
+
+
+
+
 
 // Learn from http://leafletjs.com/examples/geojson.html 
 // Error: a.target.className.indexOf is not a function
-// change the following later
+// delete the following later
 
 var freeBus = {
     "type": "FeatureCollection",
@@ -270,17 +312,18 @@ var baseballIcon = L.icon({
     iconAnchor: [16, 37],
     popupAnchor: [0, -28]
 });
+/*
+   function onEachFeature(feature, layer) {
+   var popupContent = "<p>I started out as a GeoJSON " +
+   feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
 
-function onEachFeature(feature, layer) {
-    var popupContent = "<p>I started out as a GeoJSON " +
-        feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
+   if (feature.properties && feature.properties.popupContent) {
+   popupContent += feature.properties.popupContent;
+   }
 
-    if (feature.properties && feature.properties.popupContent) {
-        popupContent += feature.properties.popupContent;
-    }
-
-    layer.bindPopup(popupContent);
-}
+   layer.bindPopup(popupContent);
+   }
+   */
 
 L.geoJson([bicycleRental, campus], {
 
