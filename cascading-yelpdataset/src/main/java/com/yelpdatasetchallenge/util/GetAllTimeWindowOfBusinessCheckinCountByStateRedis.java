@@ -22,6 +22,7 @@ import com.yelpdatasetchallenge.objects.GeoJSONBusinessFeatureProperties;
 import redis.clients.jedis.Jedis;
 import driven.com.fasterxml.jackson.databind.JsonNode;
 import driven.com.fasterxml.jackson.databind.ObjectMapper;
+import driven.com.fasterxml.jackson.databind.ObjectWriter;
 
 public class GetAllTimeWindowOfBusinessCheckinCountByStateRedis {
   HashSet<String> stateSet = new HashSet<String>();
@@ -118,13 +119,14 @@ public class GetAllTimeWindowOfBusinessCheckinCountByStateRedis {
           JsonNode businessAddress = businessObj.get("full_address");
           JsonNode businessLatitude = businessObj.get("latitude");
           JsonNode businessLongitude = businessObj.get("longitude");
-          System.out.println(businessName.asText());
 
           JsonNode stateObj = businessObj.get("state");
           stateSet.add(stateObj.asText());
           if (!getWholeData && !stateObj.asText().equals(stateSelected)){
             continue;
           }
+
+          System.out.println(businessName.asText());
 
           // Get chech-in info
           JsonNode checkinInfoObj = checkInObj.get("checkin_info");
@@ -185,13 +187,15 @@ public class GetAllTimeWindowOfBusinessCheckinCountByStateRedis {
       businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/businessFeatureClctn_"+stateSelected+".json"), businessFeatureClctn);
     }
 
-    jedis.set("businessGeoJSON", businessFeatureClctn.toString());
+    ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+    String businessFeatureClctnJson = ow.writeValueAsString(businessFeatureClctn);
+    jedis.set("businessGeoJSON", businessFeatureClctnJson);
     // System.out.println(jedis.get("businessGeoJSON"));
 
     System.out.println("\nState set: "+ stateSet.size());
     Iterator<String> it = stateSet.iterator();
     while(it.hasNext()) {
-      System.out.print(it.next().toString()+", ");  
+      System.out.print(it.next().toString()+" ");  
     }
   } 
 
@@ -199,10 +203,12 @@ public class GetAllTimeWindowOfBusinessCheckinCountByStateRedis {
     GetAllTimeWindowOfBusinessCheckinCountByStateRedis byState = new GetAllTimeWindowOfBusinessCheckinCountByStateRedis();
     PrintWriter logWriter = new PrintWriter("src/main/resources/yelp-dataset/log_yelp_academic_dataset.txt", "UTF-8");
     Jedis jedis = new Jedis("localhost");
-    jedis.flushAll();
+    //    jedis.flushAll();
 
-    byState.saveBusinessInfoIntoRedisByID(jedis, logWriter);
-    byState.buildGeoJSONForLeafletSaveToRedis(jedis, logWriter, false, "CA"); // getWholeData=false means only get state data (there are 18 states info in the Yelp Dataset)
+    //    byState.saveBusinessInfoIntoRedisByID(jedis, logWriter);
+    byState.buildGeoJSONForLeafletSaveToRedis(jedis, logWriter, false, "NV"); 
+    // getWholeData=false means only get state data (there are 18 states info in the Yelp Dataset)
+    // BW, SCB, MLN, SC, IL, ELN, NV, QC, WI, AZ, CA, KHL, ON, FIF, WA, EDH, PA, NC
 
     System.out.println("\nDone!!");
     jedis.close();

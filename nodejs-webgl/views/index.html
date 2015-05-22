@@ -71,6 +71,7 @@
                     <div id="fb-root">
                         <div class="fb-login-button" data-max-rows="5" data-size="medium" data-show-faces="true" data-auto-logout-link="true"></div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -80,6 +81,17 @@
             <div class="modal"> <a href="#" class="close"> <i class="mdi-navigation-close"></i> </a>
                 <div class="modal-content">
                     Color Palette
+
+                    <br> <br>
+                    <button type="button" id="submitquerytoredis">Show GeoJSON overlay</button>
+                    <script type="text/javascript">
+                        $("#submitquerytoredis").on("click", function() {
+                            $.post('/redis?query=businessGeoJSON', function(geoJSONfile) {
+                                //console.log(geoJSONfile);
+                                showYelpDataGeoJSONOverlay(geoJSONfile);
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>

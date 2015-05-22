@@ -29,7 +29,7 @@ Note that WARNINGs are shown in Eclipse
     * $ `aws emr create-default-roles` [IAM Roles](http://aws.amazon.com/iam/) [doc](https://groups.google.com/forum/#!msg/snowplow-user/R9q1Jzpj3sw/CqoMCGRxvyUJ)
     * Attach policies to the certain user
 * Run programs on AWS Elastic MapReduce and Redshift
-    * $ `cd [path]/[to]/backend-cascading-yelpdataset`    
+    * $ `cd [path]/[to]/cascading-yelpdataset`    
     * setup global variables [REDSHIFT_URL] [REDSHIFT_USER] [REDSHIFT_PASSWORD] [S3_BUCKET] [AWS_ACCESS_KEY] [AWS_SECRET_KEY] [HHY_BACKEND_PATH] in ~/.bash_profile
     * $ `awsscripts/awsdownloaddata.sh`  
         * [Download Data](http://docs.cascading.org/tutorials/cascading-aws/prerequisites.html)     

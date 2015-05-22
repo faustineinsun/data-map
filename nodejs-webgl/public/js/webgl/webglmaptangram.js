@@ -5,12 +5,15 @@ var layer = Tangram.leafletLayer({
 });
 
 layer.addTo(map);
-//map.setView([37.7871,-122.4247], 14);
-map.setView([39.7357,-104.9992], 14);
+//map.setView([37.7871,-122.4247], 14); // San Fransico
+//map.setView([39.7357,-104.9992], 14); // Geojson on Leaflet example
+map.setView([36.1348,-115.0344], 11); // State NV in USA 
 
 var hash = new L.Hash(map);
 
+
 // Geojson on Leaflet
+// reference http://leafletjs.com/examples/geojson.html 
 
 function onEachFeature(feature, layer) {
     var popupContent = "<p><b>" + feature.properties.businessName +"</b></p>"
@@ -23,10 +26,11 @@ function onEachFeature(feature, layer) {
 }
 
 //$.getJSON("assets/yelpgeojson/businessFeatureClctn.json", function(json) {
-$.getJSON("assets/yelpgeojson/businessFeatureClctn_CA.json", function(json) {
-    var businessLocation=json;
+//});
+function showYelpDataGeoJSONOverlay(geojsonfile) {
+    var businessLocation=JSON.parse(geojsonfile);
 
-    //console.log(json);
+    //console.log(geojsonfile);
     L.geoJson(businessLocation, {
         style: function (feature) {
                    return feature.properties && feature.properties.style;
@@ -45,7 +49,8 @@ $.getJSON("assets/yelpgeojson/businessFeatureClctn_CA.json", function(json) {
             });
         }
     }).addTo(map);
-});
+
+}
 
 
 
@@ -53,7 +58,8 @@ $.getJSON("assets/yelpgeojson/businessFeatureClctn_CA.json", function(json) {
 
 
 
-// Learn from http://leafletjs.com/examples/geojson.html 
+
+// learn from http://leafletjs.com/examples/geojson.html 
 // Error: a.target.className.indexOf is not a function
 // delete the following later
 

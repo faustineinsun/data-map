@@ -30,7 +30,7 @@ $ git checkout -b frontend (if branch `frontend` exits, use $ `git checkout fron
 $ git merge master
 ```
 
-* Modify codes in branch `frontend` -> folder `hadoophackathon/frontend-nodejs-webgl` 
+* Modify codes in branch `frontend` -> folder `hadoophackathon/nodejs-webgl` 
 
 ```
 $ vim views/index.html
