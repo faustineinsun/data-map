@@ -1,5 +1,4 @@
-package com.yelpdatasetchallenge.util;
-
+package com.yelpdatasetchallenge.dataprocessing;
 /**
  * @author feiyu
  */
@@ -7,14 +6,13 @@ package com.yelpdatasetchallenge.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.yelpdatasetchallenge.objects.Business;
+import com.yelpdatasetchallenge.objects.BusinessHM;
 
 import driven.com.fasterxml.jackson.annotation.PropertyAccessor;
 import driven.com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -22,21 +20,21 @@ import driven.com.fasterxml.jackson.databind.JsonNode;
 import driven.com.fasterxml.jackson.databind.ObjectMapper;
 import driven.com.fasterxml.jackson.databind.node.ArrayNode;
 
-public class GetAllTimeWindowOfBusinessCheckinCountHashMap {
+public class DataStoreHashMap extends DataStore implements BusinessCheckInWindowInterface {
   private Map<String, JsonNode> businessHM = new HashMap<String, JsonNode>(); 
   private Map<String, JsonNode> checkInHourWeekHM = new HashMap<String, JsonNode>();
 
-  public void saveBusinessInfoIntoHashMap() throws IOException {
+  @Override
+  public void mapBusinessIDWithItsJson() throws IOException {
     BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_business.json"));
     ObjectMapper mapper = new ObjectMapper();
-    PrintWriter writer = new PrintWriter("src/main/resources/yelp-dataset/yelp_academic_dataset_business_output.txt", "UTF-8");
 
     try {
       String line = br.readLine();
       while (line != null) {
         JsonNode actualObj = mapper.readTree(line);
         JsonNode businessID = actualObj.get("business_id");
-        //        System.out.println("key:"+businessID.asText());//+", value:"+actualObj);
+        // System.out.println("key:"+businessID.asText());//+", value:"+actualObj);
         businessHM.put(businessID.asText(), actualObj);
 
         line = br.readLine();
@@ -44,16 +42,14 @@ public class GetAllTimeWindowOfBusinessCheckinCountHashMap {
     } finally {
       br.close();
     }
-    System.out.println(businessHM.get("6TPxhpHqFedjMvBuw6pF3w"));
-    System.out.println("num of business: "+ businessHM.size());
-    writer.println("num of business: "+ businessHM.size());
-    writer.close();
+    logWriter.println("6TPxhpHqFedjMvBuw6pF3w : "+businessHM.get("6TPxhpHqFedjMvBuw6pF3w"));
+    logWriter.println("num of business: "+ businessHM.size());
   }
 
-  public void saveCheckInInfoIntoHashMap() throws IOException {
+  @Override
+  public void getBusinessCheckInInfo() throws IOException {
     BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json"));
     ObjectMapper mapper = new ObjectMapper();
-    PrintWriter writer = new PrintWriter("src/main/resources/yelp-dataset/yelp_academic_dataset_checkin_output.txt", "UTF-8");
 
     try {
       String line = br.readLine();
@@ -70,22 +66,22 @@ public class GetAllTimeWindowOfBusinessCheckinCountHashMap {
           String key = field.getKey();
           JsonNode value = field.getValue();
 
-          Business b = new Business();
+          BusinessHM b = new BusinessHM();
           b.setBusinessID(businessID.asText());
           b.setCheckInCountTimeWindow(value.asText());
           ObjectMapper businessMapper = new ObjectMapper();
           businessMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
-          List<Business> businessAryList = new ArrayList<Business>();
+          List<BusinessHM> businessAryList = new ArrayList<BusinessHM>();
           businessAryList.add(b);
           JsonNode businessJsonAry = businessMapper.valueToTree(businessAryList);
 
           if (checkInHourWeekHM.containsKey(key)) {
             businessJsonAry = checkInHourWeekHM.get(key); 
-            //            System.out.println(businessJsonAry);
+            // System.out.println(businessJsonAry);
             ((ArrayNode)businessJsonAry).add(businessMapper.valueToTree(b));
           } 
-          //          System.out.println(key+"-----"+businessJsonAry);
+          // System.out.println(key+"-----"+businessJsonAry);
           checkInHourWeekHM.put(key, businessJsonAry);
         }
         line = br.readLine();
@@ -93,23 +89,26 @@ public class GetAllTimeWindowOfBusinessCheckinCountHashMap {
     } finally {
       br.close();
     }
-    System.out.println("value: "+checkInHourWeekHM.get("17-3"));
-    writer.println("value: "+checkInHourWeekHM.get("17-3"));
+    logWriter.println("value: "+checkInHourWeekHM.get("17-3"));
+    logWriter.println("Size of checkInHourWeekHM: "+checkInHourWeekHM.size());
+    /*
+        Iterator it = checkInHourWeekHM.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            logWriter.println(pair.getKey() + " = " + pair.getValue());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+     */
+  }
 
-    System.out.println("Size of checkInHourWeekHM: "+checkInHourWeekHM.size());
-    writer.println("Size of checkInHourWeekHM: "+checkInHourWeekHM.size());
-    //    Iterator it = checkInHourWeekHM.entrySet().iterator();
-    //    while (it.hasNext()) {
-    //        Map.Entry pair = (Map.Entry)it.next();
-    //        System.out.println(pair.getKey() + " = " + pair.getValue());
-    //        it.remove(); // avoids a ConcurrentModificationException
-    //    }
-    writer.close();
+  @Override
+  public void callMethods() throws IOException {
+    mapBusinessIDWithItsJson();
+    getBusinessCheckInInfo();
   }
 
   public static void main(String[] argv) throws IOException {
-    GetAllTimeWindowOfBusinessCheckinCountHashMap allBusinessCheckinCount = new GetAllTimeWindowOfBusinessCheckinCountHashMap();
-    allBusinessCheckinCount.saveBusinessInfoIntoHashMap();
-    allBusinessCheckinCount.saveCheckInInfoIntoHashMap();
+    DataStoreHashMap dshm = new DataStoreHashMap();
+    dshm.run("src/main/resources/yelp-dataset/log_HashMap_yelp_academic_dataset.txt");
   }
 }

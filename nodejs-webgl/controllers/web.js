@@ -19,16 +19,16 @@ app.get('/', function(req, res) {
 // Redis
 app.post('/redis', function(request, response) {
     redisclient.on("error", function (err) {
-        console.log("\nRedis -- error " + err);
+        console.log("Redis -- error " + err);
     });
     redisclient.get("businessGeoJSON", function(err, geoJSONfile) {
         if (geoJSONfile == null) {
-            console.log("\nRedis -- key: "+ request.query.rediskey +" is missing");
+            console.log("Redis -- key: "+ request.query.rediskey +" is missing");
         } else {
             response.send(geoJSONfile);
             //console.log("\nRedis -- GeoJOSN: "+geoJSONfile);
             //GeoJSONfile is very large
-            console.log("\nRedis -- get GeoJOSN file");
+            console.log("Redis -- get GeoJOSN file");
         }
     });
 });

@@ -4,7 +4,7 @@ package com.yelpdatasetchallenge.objects;
  * @author feiyu
  */
 
-public class Business {
+public class BusinessHM {
   private String business_id;
   private String check_in_count_time_window;
 
