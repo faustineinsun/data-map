@@ -59,6 +59,8 @@ dependencies {
   compile( group: 'org.postgresql', name: 'postgresql', version: '9.4-1201-jdbc41')
   compile( group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.5.2')
   compile( group: 'redis.clients', name: 'jedis', version: '2.7.2')
+  compile( group: 'mysql', name: 'mysql-connector-java', version: '5.1.35')
+  compile( group: 'org.mybatis', name: 'mybatis', version: '3.3.0')
 
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: hadoopVersion )
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client', version: hadoopVersion )

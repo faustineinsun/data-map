@@ -121,13 +121,13 @@ public class DataStoreRedisWholeDataSet extends DataStoreRedis {
     this.initJedis("localhost");
     this.clearJedis();
 
-    this.mapBusinessIDWithItsJson();
+    this.saveBusinessInfoToDataStore();
     this.getBusinessCheckInInfo();
 
     this.closeJedis();
   }
 
-  public static void main(String[] argv) throws IOException {
+  public static void main(String[] argv) throws Exception {
     DataStoreRedisWholeDataSet dsRedisWhole = new DataStoreRedisWholeDataSet();
     dsRedisWhole.run("src/main/resources/yelp-dataset/log_redis_whole_yelp_academic_dataset.txt");
   }

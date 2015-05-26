@@ -25,7 +25,7 @@ public class DataStoreHashMap extends DataStore implements BusinessCheckInWindow
   private Map<String, JsonNode> checkInHourWeekHM = new HashMap<String, JsonNode>();
 
   @Override
-  public void mapBusinessIDWithItsJson() throws IOException {
+  public void saveBusinessInfoToDataStore() throws IOException {
     BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_business.json"));
     ObjectMapper mapper = new ObjectMapper();
 
@@ -103,11 +103,11 @@ public class DataStoreHashMap extends DataStore implements BusinessCheckInWindow
 
   @Override
   public void callMethods() throws IOException {
-    mapBusinessIDWithItsJson();
+    saveBusinessInfoToDataStore();
     getBusinessCheckInInfo();
   }
 
-  public static void main(String[] argv) throws IOException {
+  public static void main(String[] argv) throws Exception {
     DataStoreHashMap dshm = new DataStoreHashMap();
     dshm.run("src/main/resources/yelp-dataset/log_HashMap_yelp_academic_dataset.txt");
   }

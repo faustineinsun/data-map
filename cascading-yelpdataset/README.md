@@ -63,7 +63,7 @@ Note that WARNINGs are shown in Eclipse
 (master) sudo start-hbase.sh
 ```
 
-##### Install Redis
+##### Redis
 
 ```
 $ brew update
@@ -72,4 +72,11 @@ $ brew install redis
 $ ln -sfv /usr/local/opt/redis/homebrew.mxcl.redis.plist /Library/LaunchAgents/
 $ lunchy start redis 
 $ lunchy stop redis 
+```
+
+##### MySQL
+
+```
+$ mysql -u root -h localhost -p
+$ sudo /usr/local/mysql/support-files/mysql.server restart 
 ```

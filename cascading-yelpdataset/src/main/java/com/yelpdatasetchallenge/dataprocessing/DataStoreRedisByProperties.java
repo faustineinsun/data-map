@@ -135,7 +135,7 @@ public class DataStoreRedisByProperties extends DataStoreRedis {
     this.initJedis("localhost");
 
     this.clearJedis();
-    this.mapBusinessIDWithItsJson();
+    this.saveBusinessInfoToDataStore();
     this.getStateCityCategoryHourWeekBusinessMapping();
 
     Set<String> keys = jedis.keys("PA:*:Bars:23-5");
@@ -150,7 +150,7 @@ public class DataStoreRedisByProperties extends DataStoreRedis {
     this.closeJedis();
   }
 
-  public static void main(String[] argv) throws IOException {
+  public static void main(String[] argv) throws Exception {
     DataStoreRedisByProperties dsRedisByProp = new DataStoreRedisByProperties();
     dsRedisByProp.run("src/main/resources/yelp-dataset/log_redis_properties_yelp_academic_dataset.txt");
   }

@@ -12,7 +12,7 @@ public class DataStoreRedis extends DataStore implements BusinessCheckInWindowIn
   Jedis jedis;
 
   @Override
-  public void mapBusinessIDWithItsJson() throws IOException {
+  public void saveBusinessInfoToDataStore() throws IOException {
     BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_business.json"));
     ObjectMapper mapper = new ObjectMapper();
 
