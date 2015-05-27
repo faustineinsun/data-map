@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -70,7 +69,7 @@ public class DataStoreMySQL extends DataStore implements BusinessCheckInWindowIn
       if (resetDB) {
         this.resetDatabaseAndTables(); 
       } else {
-        this.saveBusinessInfoToDataStore();
+//        this.saveBusinessInfoToDataStore();
         this.getBusinessCheckInInfo();
       }
 
@@ -105,9 +104,12 @@ public class DataStoreMySQL extends DataStore implements BusinessCheckInWindowIn
   }
   
   private void resetDatabaseAndTables(){
-    System.out.println("Reset Database and Tables");
+    System.out.println("\n*******************************************\n"
+                       + "***Start of Reseting Database and Tables***");
     this.runSqlScript("src/main/resources/sql/CreatDB.sql");
     this.runSqlScript("src/main/resources/sql/CreatTables.sql");
+    System.out.println("\n***End of Reseting Database and Tables***"
+                     + "\n*****************************************");
   }
 
   private void close() {
@@ -131,7 +133,7 @@ public class DataStoreMySQL extends DataStore implements BusinessCheckInWindowIn
   }
 
   @Override
-  public void getBusinessCheckInInfo() throws IOException {
+  public void getBusinessCheckInInfo() throws Exception{
   }
 
   @Override

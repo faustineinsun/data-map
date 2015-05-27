@@ -4,7 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 
 import driven.com.fasterxml.jackson.core.JsonFactory;
 import driven.com.fasterxml.jackson.core.JsonParser;
@@ -15,7 +21,7 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
 
   @Override
   public void saveBusinessInfoToDataStore() throws Exception {
-    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_business.json"));
+    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_business_short.json"));
     ObjectMapper mapper = new ObjectMapper();
 
     try {
@@ -24,13 +30,18 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
         System.out.println(line);
         JsonNode businessObj = mapper.readTree(line);
         line = br.readLine();
-
+        /*
         statement.addBatch("DELETE FROM Businesses");
         statement.addBatch("DELETE FROM Categories");
+        statement.addBatch("DELETE FROM CheckinTimeWindow");
+        statement.addBatch("DELETE FROM Cities");
+        statement.addBatch("DELETE FROM Business_Category");
+        statement.addBatch("DELETE FROM Business_Checkin");
+         */
         this.sqlInsertBusinessInfo(businessObj);
 
       }
-//      this.showResults();
+      //      this.showResults();
     } finally {
       br.close();
     }
@@ -60,28 +71,73 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
     List<String> categoryList = categoryListMapper.readValue(categoryListParser, List.class);
     for (String category : categoryList) {
       // System.out.println("&&&&&&&& "+category);
+
       preparedStatement = connect
-          .prepareStatement("INSERT INTO Categories(Category, BusinessId) "
-              + "VALUES(?,?)");
+          .prepareStatement("INSERT IGNORE INTO Categories(Category) VALUES(?)");
       preparedStatement.setString(1, category);
-      preparedStatement.setString(2, businessObj.get("business_id").toString());
+      preparedStatement.executeUpdate();
+
+      preparedStatement = connect
+          .prepareStatement("INSERT INTO Business_Category(BusinessId, State, Category) VALUES(?,?,?)");
+      preparedStatement.setString(1, businessObj.get("business_id").asText());
+      preparedStatement.setString(2, businessObj.get("state").asText());
+      preparedStatement.setString(3, category);
+      preparedStatement.executeUpdate();
+
+      preparedStatement = connect
+          .prepareStatement("INSERT IGNORE INTO Cities(City, State) VALUES(?,?)");
+      preparedStatement.setString(1, businessObj.get("city").asText());
+      preparedStatement.setString(2, businessObj.get("state").asText());
+      preparedStatement.executeUpdate();
+    }
+  }
+
+  private void sqlInsertCheckInInfo(JsonNode checkInObj) throws SQLException, ParseException {
+    /*
+           e.g.: checkinInfoObj: {"9-5":1,"7-5":1,"13-3":1,"17-6":1,"13-0":1,"17-3":1,"10-0":1,"18-4":1,"14-6":1}
+           iterate through checkinInfoObj and get all of the <keyTimeWindow,valueCount> pairs, 
+     */
+    JsonNode checkinInfoObj = checkInObj.get("checkin_info");
+    System.out.println(checkinInfoObj.toString());
+    Iterator<Map.Entry<String,JsonNode>> checkinInfoFields = checkinInfoObj.fields();
+    while (checkinInfoFields.hasNext()) {
+      Map.Entry<String,JsonNode> checkinInfoField = checkinInfoFields.next();
+      String keyTimeWindow = checkinInfoField.getKey();
+      JsonNode valueCount = checkinInfoField.getValue();
+//      System.out.println(keyTimeWindow+": "+valueCount);
+
+      String[] keyTimeWindowList = keyTimeWindow.split("-");
+
+      preparedStatement = connect
+          .prepareStatement("INSERT IGNORE INTO CheckinTimeWindow(HourWeekTimeWindow) VALUES(?)");
+      preparedStatement.setString(1, keyTimeWindow);
+      preparedStatement.executeUpdate();
+
+      preparedStatement = connect
+          .prepareStatement("INSERT INTO Business_Checkin(HourWeekTimeWindow, Hour, Week, BusinessId, Count) VALUES(?,?,?,?,?)");
+      preparedStatement.setString(1, keyTimeWindow);
+      preparedStatement.setString(2, keyTimeWindowList[0]);
+      preparedStatement.setString(3, keyTimeWindowList[1]);
+      preparedStatement.setString(4, checkInObj.get("business_id").asText());
+      preparedStatement.setInt(5, Integer.valueOf(valueCount.asText()));
       preparedStatement.executeUpdate();
     }
   }
 
   @Override
-  public void getBusinessCheckInInfo() throws IOException {
-    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_checkin_short.json"));
+  public void getBusinessCheckInInfo() throws IOException, SQLException, ParseException {
+    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json"));
     ObjectMapper mapper = new ObjectMapper();
 
     try {
       String line = br.readLine();
       while (line != null) {
-        JsonNode actualObj = mapper.readTree(line);
+        JsonNode checkInObj = mapper.readTree(line);
         line = br.readLine();
 
-        // Map business_id with it's json info
-        JsonNode businessID = actualObj.get("business_id");
+        statement.addBatch("DELETE FROM Checkin");
+        this.sqlInsertCheckInInfo(checkInObj);
+
       }
     } finally {
       br.close();
@@ -90,10 +146,10 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
 
   @Override
   public void callMethods() throws Exception {
-//    this.mySQLDatabaseOperations(true);
+    this.mySQLDatabaseOperations(true);
     this.mySQLDatabaseOperations(false);
   }
-  
+
   @SuppressWarnings("unused")
   private void showResults() throws SQLException {
     System.out.println("//////////////////////////");
@@ -123,8 +179,6 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
       System.out.println("BusinessId: " + resultSet.getString("BusinessId"));
     }
   }
-
-
 
   public static void main(String[] argv) throws Exception {
     DataStoreMySQLByProperties dsMysqlProp = new DataStoreMySQLByProperties();
