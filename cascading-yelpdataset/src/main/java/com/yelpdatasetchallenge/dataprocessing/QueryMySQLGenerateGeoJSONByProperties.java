@@ -74,7 +74,9 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
     }
     if (numBsnsInStateTimeWindow>0) {
       System.out.println(State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
-      // this.logWriter.println(State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
+      if (numBsnsInStateTimeWindow==8889) {
+        this.logWriter.println("\n"+State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
+      }
       this.maxNumBsnsInStateTimeWindow = Math.max(maxNumBsnsInStateTimeWindow, numBsnsInStateTimeWindow);
       this.numJsonFileGernerated++;
     }
