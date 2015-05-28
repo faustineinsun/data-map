@@ -20,7 +20,7 @@ import driven.com.fasterxml.jackson.core.JsonParser;
 import driven.com.fasterxml.jackson.databind.JsonNode;
 import driven.com.fasterxml.jackson.databind.ObjectMapper;
 
-public class DataStoreMySQLByProperties extends DataStoreMySQL {
+public class DataStoreMySQLByProperties extends DataStoreMySQL implements BusinessCheckInWindowInterface {
 
   public DataStoreMySQLByProperties(String logFilePath, String businessFilePath,
                                     String checkinFilePath) throws Exception {
@@ -29,8 +29,8 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
 
   private void sqlInsertBusinessInfo(JsonNode businessObj) throws SQLException, IOException {
     preparedStatement = connect
-        .prepareStatement("INSERT INTO Businesses(BusinessId, Name, FullAddress, City, State, Latitude, Longitude) "
-            + "VALUES(?,?,?,?,?,?,?)");
+        .prepareStatement("INSERT INTO Businesses(BusinessId, Name, FullAddress, City, State, Latitude, Longitude, Category) "
+            + "VALUES(?,?,?,?,?,?,?,?)");
     preparedStatement.setString(1, businessObj.get("business_id").asText());
     preparedStatement.setString(2, businessObj.get("name").asText());
     preparedStatement.setString(3, businessObj.get("full_address").toString());
@@ -38,6 +38,8 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
     preparedStatement.setString(5, businessObj.get("state").asText());
     preparedStatement.setFloat(6, Float.valueOf(businessObj.get("latitude").asText()));
     preparedStatement.setFloat(7, Float.valueOf(businessObj.get("longitude").asText()));
+    preparedStatement.setString(8, businessObj.get("categories").toString());
+
     preparedStatement.executeUpdate();
 
     this.sqlInsertCategoryInfo(businessObj);
@@ -105,6 +107,20 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
   }
 
   @Override
+  protected void mySQLDatabaseOperations(boolean resetDB, boolean autoCommit) throws Exception {
+      if (resetDB) {
+        this.resetDatabaseAndTables(); 
+      } else {
+        this.saveBusinessInfoToDataStore();
+        this.getBusinessCheckInInfo();
+        
+        if (!autoCommit) {
+          connect.commit();
+        }
+      }
+  }
+
+  @Override
   public void saveBusinessInfoToDataStore() throws Exception {
     BufferedReader br = new BufferedReader(new FileReader(businessFilePath));
     ObjectMapper mapper = new ObjectMapper();
@@ -154,8 +170,8 @@ public class DataStoreMySQLByProperties extends DataStoreMySQL {
 
   @Override
   public void callMethods() throws Exception {
-    this.mySQLDatabaseOperations(true, true);
-    this.mySQLDatabaseOperations(false, true);
+    this.connectMySQL(true, true);
+    this.connectMySQL(false, true);
   }
 
   public static void main(String[] argv) throws Exception {
