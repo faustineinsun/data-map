@@ -1,5 +1,7 @@
 package com.yelpdatasetchallenge.dataprocessing;
 
+import java.sql.SQLException;
+
 /**
  * @author feiyu
  * Example Code of GeoJSON
@@ -42,26 +44,62 @@ package com.yelpdatasetchallenge.dataprocessing;
  */
 
 public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implements GenerateGeoJSONInterface {
+  private String[] stateAry = {"BW", "SCB", "MLN", "SC", "IL", "ELN", "NV", "QC", "WI", "AZ", "CA", "KHL", "ON", "FIF", "WA", "EDH", "PA", "NC"};
+  private int maxNumBsnsInStateTimeWindow = Integer.MIN_VALUE;
+  private int numJsonFileGernerated = 0;
 
   public QueryMySQLGenerateGeoJSONByProperties(String logFilePath, String businessFilePath,
                                                String checkinFilePath) throws Exception {
     super(logFilePath, businessFilePath, checkinFilePath);
   }
 
-  private void queryDB(String State, String Hour, String Week) {
+  private void queryDB(String State, String Hour, String Week) throws SQLException {
+    preparedStatement = connect.prepareStatement(
+      "SELECT Businesses.*, Business_checkin.`Count`, Business_checkin.`Hour`,  Business_checkin.`Week` " 
+          +"FROM  Businesses INNER JOIN Business_checkin "
+          +"ON Businesses.`BusinessId` = Business_checkin.`BusinessId` "
+          +"WHERE Businesses.`State` = ? "
+          +"AND Business_checkin.`Hour` = ? AND Business_checkin.`Week` = ?");
+    preparedStatement.setString(1, State);
+    preparedStatement.setString(2, Hour);
+    preparedStatement.setString(3, Week);
+    // System.out.println("------"+preparedStatement.toString());
 
+    resultSet = preparedStatement.executeQuery();
+
+    int numBsnsInStateTimeWindow=0;
+    while (resultSet.next()) {
+      // System.out.println(resultSet.getString("BusinessId"));
+      ++numBsnsInStateTimeWindow;
+    }
+    if (numBsnsInStateTimeWindow>0) {
+      System.out.println(State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
+      // this.logWriter.println(State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
+      this.maxNumBsnsInStateTimeWindow = Math.max(maxNumBsnsInStateTimeWindow, numBsnsInStateTimeWindow);
+      this.numJsonFileGernerated++;
+    }
   }
 
   public void generateGeoJSON() {
 
   }
 
-
   @Override
-  public void queryDBAndGenerateGeoJSON() {
-    this.queryDB("NV", "19", "5");
-    this.generateGeoJSON();
+  public void queryDBAndGenerateGeoJSON() throws SQLException {
     System.out.println("Do Something here!");
+
+    for (String stateInitial : stateAry) {
+      for (int hour=0; hour<24; hour++) {
+        for (int week=0; week<7; week++) {
+          this.queryDB(stateInitial, String.valueOf(hour), String.valueOf(week));
+        }
+      }
+    }
+
+    this.generateGeoJSON();
+    System.out.println("maxNumBsnsInStateTimeWindow:"+this.maxNumBsnsInStateTimeWindow+" "
+        + ", numJsonFileGernerated:"+this.numJsonFileGernerated);
+    System.out.println("GeoJSON file now has been generated! "); 
   }
 
   @Override

@@ -11,4 +11,4 @@ SELECT Businesses.*, Business_checkin.`Count`, Business_checkin.`Hour`,  Busines
 FROM  Businesses INNER JOIN Business_checkin
 ON Businesses.`BusinessId` = Business_checkin.`BusinessId`
 WHERE Businesses.`State` = 'NV'
-AND Business_checkin.`Week` = '5' AND Business_checkin.`Hour` = '19';
+AND Business_checkin.`Hour` = '19' AND Business_checkin.`Week` = '5';
