@@ -1,5 +1,9 @@
 package com.yelpdatasetchallenge.dataprocessing;
 
+/**
+ * @author feiyu
+ */
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,9 +23,14 @@ import driven.com.fasterxml.jackson.databind.ObjectWriter;
 
 public class DataStoreRedisWholeDataSet extends DataStoreRedis {
 
+  public DataStoreRedisWholeDataSet(String logFilePath, String businessFilePath,
+                                    String checkinFilePath) throws Exception {
+    super(logFilePath, businessFilePath, checkinFilePath);
+  }
+
   @Override
   public void getBusinessCheckInInfo() throws IOException {
-    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json"));
+    BufferedReader br = new BufferedReader(new FileReader(checkinFilePath));
     ObjectMapper checkInMapper = new ObjectMapper();
 
     // Build GeoJSON for Leaflet  
@@ -128,7 +137,10 @@ public class DataStoreRedisWholeDataSet extends DataStoreRedis {
   }
 
   public static void main(String[] argv) throws Exception {
-    DataStoreRedisWholeDataSet dsRedisWhole = new DataStoreRedisWholeDataSet();
-    dsRedisWhole.run("src/main/resources/yelp-dataset/log_redis_whole_yelp_academic_dataset.txt");
+    DataStoreRedisWholeDataSet dsRedisWhole = new DataStoreRedisWholeDataSet(
+      "src/main/resources/yelp-dataset/log_redis_whole_yelp_academic_dataset.txt",
+      "src/main/resources/yelp-dataset/yelp_academic_dataset_business.json",
+        "src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json");
+    dsRedisWhole.run();
   }
 }

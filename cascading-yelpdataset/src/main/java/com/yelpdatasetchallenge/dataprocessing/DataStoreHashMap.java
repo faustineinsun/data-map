@@ -1,4 +1,5 @@
 package com.yelpdatasetchallenge.dataprocessing;
+
 /**
  * @author feiyu
  */
@@ -21,12 +22,18 @@ import driven.com.fasterxml.jackson.databind.ObjectMapper;
 import driven.com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class DataStoreHashMap extends DataStore implements BusinessCheckInWindowInterface {
+
+  public DataStoreHashMap(String logFilePath, String businessFilePath, String checkinFilePath)
+      throws Exception {
+    super(logFilePath, businessFilePath, checkinFilePath);
+  }
+
   private Map<String, JsonNode> businessHM = new HashMap<String, JsonNode>(); 
   private Map<String, JsonNode> checkInHourWeekHM = new HashMap<String, JsonNode>();
 
   @Override
   public void saveBusinessInfoToDataStore() throws IOException {
-    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_business.json"));
+    BufferedReader br = new BufferedReader(new FileReader(businessFilePath));
     ObjectMapper mapper = new ObjectMapper();
 
     try {
@@ -34,7 +41,7 @@ public class DataStoreHashMap extends DataStore implements BusinessCheckInWindow
       while (line != null) {
         JsonNode actualObj = mapper.readTree(line);
         JsonNode businessID = actualObj.get("business_id");
-        // System.out.println("key:"+businessID.asText());//+", value:"+actualObj);
+        System.out.println("key:"+businessID.asText());//+", value:"+actualObj);
         businessHM.put(businessID.asText(), actualObj);
 
         line = br.readLine();
@@ -48,7 +55,7 @@ public class DataStoreHashMap extends DataStore implements BusinessCheckInWindow
 
   @Override
   public void getBusinessCheckInInfo() throws IOException {
-    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json"));
+    BufferedReader br = new BufferedReader(new FileReader(checkinFilePath));
     ObjectMapper mapper = new ObjectMapper();
 
     try {
@@ -108,7 +115,10 @@ public class DataStoreHashMap extends DataStore implements BusinessCheckInWindow
   }
 
   public static void main(String[] argv) throws Exception {
-    DataStoreHashMap dshm = new DataStoreHashMap();
-    dshm.run("src/main/resources/yelp-dataset/log_HashMap_yelp_academic_dataset.txt");
+    DataStoreHashMap dshm = new DataStoreHashMap(
+      "src/main/resources/yelp-dataset/log_HashMap_yelp_academic_dataset.txt",
+      "src/main/resources/yelp-dataset/yelp_academic_dataset_business.json",
+        "src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json");
+    dshm.run();
   }
 }

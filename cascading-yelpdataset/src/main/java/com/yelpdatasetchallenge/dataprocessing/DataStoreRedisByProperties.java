@@ -56,8 +56,14 @@ import driven.com.fasterxml.jackson.databind.JsonNode;
 import driven.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DataStoreRedisByProperties extends DataStoreRedis {
+
+  public DataStoreRedisByProperties(String logFilePath, String businessFilePath,
+                                    String checkinFilePath) throws Exception {
+    super(logFilePath, businessFilePath, checkinFilePath);
+  }
+
   private void getStateCityCategoryHourWeekBusinessMapping() throws IOException {
-    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json"));
+    BufferedReader br = new BufferedReader(new FileReader(checkinFilePath));
     ObjectMapper checkInMapper = new ObjectMapper();
     try {
       String line = br.readLine();
@@ -145,13 +151,16 @@ public class DataStoreRedisByProperties extends DataStoreRedis {
       System.out.println(jedis.get(key));
     }
 
-    //    this.getBusinessCheckInInfo();
+    // this.getBusinessCheckInInfo();
 
     this.closeJedis();
   }
 
   public static void main(String[] argv) throws Exception {
-    DataStoreRedisByProperties dsRedisByProp = new DataStoreRedisByProperties();
-    dsRedisByProp.run("src/main/resources/yelp-dataset/log_redis_properties_yelp_academic_dataset.txt");
+    DataStoreRedisByProperties dsRedisByProp = new DataStoreRedisByProperties(
+      "src/main/resources/yelp-dataset/log_redis_properties_yelp_academic_dataset.txt",
+      "src/main/resources/yelp-dataset/yelp_academic_dataset_business.json",
+        "src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json");
+    dsRedisByProp.run();
   }
 }

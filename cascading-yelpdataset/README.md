@@ -77,6 +77,7 @@ $ lunchy stop redis
 ##### MySQL
 
 ```
-$ mysql -u root -h localhost -p
 $ sudo /usr/local/mysql/support-files/mysql.server restart 
+$ mysql -u root -h localhost -p
+$ vim /etc/my.cnf
 ```

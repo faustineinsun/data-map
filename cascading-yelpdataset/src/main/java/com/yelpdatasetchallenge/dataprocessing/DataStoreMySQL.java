@@ -1,5 +1,9 @@
 package com.yelpdatasetchallenge.dataprocessing;
 
+/**
+ * @author feiyu
+ */
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,6 +21,10 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 
 public class DataStoreMySQL extends DataStore implements BusinessCheckInWindowInterface {
 
+  public DataStoreMySQL(String logFilePath, String businessFilePath, String checkinFilePath) throws Exception {
+    super(logFilePath, businessFilePath, checkinFilePath);
+  }
+
   private FileInputStream in = null;
   private Properties props = new Properties();
   protected Connection connect = null;
@@ -24,7 +32,7 @@ public class DataStoreMySQL extends DataStore implements BusinessCheckInWindowIn
   protected PreparedStatement preparedStatement = null;
   protected ResultSet resultSet = null;
 
-  protected void mySQLDatabaseOperations(boolean resetDB) throws Exception {
+  protected void mySQLDatabaseOperations(boolean resetDB, boolean autoCommit) throws Exception {
 
     // read file 'database.properties'
     try {
@@ -62,28 +70,32 @@ public class DataStoreMySQL extends DataStore implements BusinessCheckInWindowIn
 
     // sql operations
     try {
-
       statement = connect.createStatement();
-      // connect.setAutoCommit(false); 
+      connect.setAutoCommit(autoCommit); 
 
       if (resetDB) {
         this.resetDatabaseAndTables(); 
       } else {
-//        this.saveBusinessInfoToDataStore();
+        this.saveBusinessInfoToDataStore();
         this.getBusinessCheckInInfo();
-      }
-
-    } catch (SQLException ex) {
-      /*
-      if (connect != null) {
-        try {
-          connect.rollback();
-        } catch (SQLException ex1) {
-          logWriter.print(DataStoreMySQL.class.getName()+" Error: connect.rollback()");
-          ex1.printStackTrace();
+        if (!autoCommit) {
+          connect.commit();
         }
       }
-       */
+      
+    } catch (SQLException ex) {
+      
+      if (!autoCommit) {
+        if (connect != null) {
+          try {
+            connect.rollback();
+          } catch (SQLException ex1) {
+            logWriter.print(DataStoreMySQL.class.getName()+" Error: connect.rollback()");
+            ex1.printStackTrace();
+          }
+        }
+      }
+      
       logWriter.print(DataStoreMySQL.class.getName()+" SQL Exception");
     } finally {
       close();
@@ -102,14 +114,14 @@ public class DataStoreMySQL extends DataStore implements BusinessCheckInWindowIn
         + " The error is " + e.getMessage());
     }
   }
-  
+
   private void resetDatabaseAndTables(){
     System.out.println("\n*******************************************\n"
-                       + "***Start of Reseting Database and Tables***");
+        + "***Start of Reseting Database and Tables***");
     this.runSqlScript("src/main/resources/sql/CreatDB.sql");
     this.runSqlScript("src/main/resources/sql/CreatTables.sql");
     System.out.println("\n***End of Reseting Database and Tables***"
-                     + "\n*****************************************");
+        + "\n*****************************************");
   }
 
   private void close() {
