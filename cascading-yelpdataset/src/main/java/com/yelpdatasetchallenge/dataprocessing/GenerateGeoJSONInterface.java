@@ -7,5 +7,5 @@ import java.sql.SQLException;
  */
 
 interface GenerateGeoJSONInterface {
-  void queryDBAndGenerateGeoJSON() throws SQLException;
+  void queryDBAndGenerateGeoJSON() throws SQLException, Exception;
 }

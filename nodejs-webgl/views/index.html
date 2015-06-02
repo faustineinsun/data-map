@@ -1,117 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>FB Instant Social Graph</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="an app showing instant social graph on one's Facebook">
-        <meta name="author" content="faustineinsun">
+<head>
+  <meta charset="utf-8">
+  <title>Data Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="faustineinsun">
 
-        <!--bootstrap-->
-        <!-- Latest compiled and minified CSS -->
-        <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script-->
+  <!--bootstrap-->
+  <!-- Latest compiled and minified CSS -->
+  <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script-->
 
-        <!-- Fav and touch icons -->
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
-        <link rel="shortcut icon" href="img/favicon.png">
+  <!-- Fav and touch icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
+  <link rel="shortcut icon" href="img/favicon.png">
 
-        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <!--script src="//code.jquery.com/jquery-1.11.3.min.js"></script-->
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
 
-        <link href="css/style.css" rel="stylesheet">
-        <script type="text/javascript" src="js/scripts.js"></script>
-        <script type="text/javascript" src="js/scalaJS/example-opt.js"></script>
-        <script type="text/javascript" src="js/fb/login.js"></script>
+  <link href="css/style.css" rel="stylesheet">
+  <script type="text/javascript" src="js/scripts.js"></script>
+  <script type="text/javascript" src="js/scalaJS/example-opt.js"></script>
+  <script type="text/javascript" src="js/fb/login.js"></script>
+
+  <!-- WebGL -->
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <script type="text/javascript" src="js/third-party-lib/leaflet-hash.js"></script>
+  <script src="https://mapzen.com/tangram/0.1/tangram.min.js"></script>
+  <script src="http://threejs.org/build/three.min.js"></script>
+
+  <link href="css/webgl/overlaybox.css" rel="stylesheet">
+  <link href="css/webgl/webglmap.css" rel="stylesheet">
+
+  <script type="text/javascript" src="js/webgl/clickinfobox.js"></script>
+
+  <script type="text/javascript" src="js/third-party-lib/raphael.min.js"></script>
+  <script type="text/javascript" src="js/third-party-lib/wheelnav.js"></script>
+  <script type="text/javascript" src="js/third-party-lib/wheelnav.datetime.js"></script>
+</head>
+
+<body>
+  <!-- WebGL -->
+
+  <!--example 1-->
+  <!--script type="text/javascript" src="js/webgl/rollingrectangle.js"></script>
+  <script>
+  init();
+  animate();
+</script-->
+
+<!--example 2: Tangram API, simple demo from https://github.com/tangrams/simple-demo-->
+<div id="map" class="leaflet-container leaflet-fade-anim"></div>
+<script type="text/javascript" src="js/webgl/webglmaptangram.js"></script>
+<script type="text/javascript">
+window.addEventListener("hashchange",function(){parent.postMessage(window.location.hash, "*")});
+</script>
+
+<!--End of WebGL-->
+
+<bottomtext>
+  <center>
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
+    <br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+    <br><br>
+  </center>
+</bottomtext>
 
 
-        <!-- WebGL -->
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<!--panel-->
+<div class="floating-item-container">
+  <div class="button-container"> <a href="#" class="btn btn-float "> <i class="mdi-image-palette"></i> </a> </div>
+  <div class="modal"> <a href="#" class="close"> <i class="mdi-navigation-close"></i> </a>
+    <div class="modal-content">
 
-        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-        <script type="text/javascript" src="js/third-party-lib/leaflet-hash.js"></script>
-        <script src="https://mapzen.com/tangram/0.1/tangram.min.js"></script>
-        <script src="http://threejs.org/build/three.min.js"></script>
+      <div id="fb-root">
+        <div class="fb-login-button" data-max-rows="5" data-size="medium" data-show-faces="true" data-auto-logout-link="true"></div>
+      </div>
 
-        <link href="css/webgl/overlaybox.css" rel="stylesheet">
-        <link href="css/webgl/webglmap.css" rel="stylesheet">
+  </div>
+</div>
+</div>
 
-        <script type="text/javascript" src="js/webgl/clickinfobox.js"></script>
-    </head>
+<div id="checkInInfoOnRedis" class="checkInInfoOnRedisStyle"></div>
+<div id="textSchema" class="textSchemaStyle"></div>
+<div id="currentWeekInfoYDC" class="weekInfoText"></div>
+<div id="currentHourInfoYDC" class="hourInfoText"></div>
+<div id="currentStateInfoYDC" class="stateInfoText"></div>
+<div id="exampleStateHourWeek" class="exampleStateHourWeekStyle"></div>
+<div id="exampleStateHourWeekText" class="exampleStateHourWeekTextStyle"></div>
+<br>
+<button type="button" id="submitquerytoredis" class="buttonShowGeoJSONOverlay">show</button>
+<script type="text/javascript">
+$("#checkInInfoOnRedis").text("Please choose the state, week, and hour");
+$("#textSchema").text("Week :: Hour  ::  State");
+$("#exampleStateHourWeek").text("Example:");
+$("#exampleStateHourWeekText").text("Fri :: 6 :: EDH");
+$("#submitquerytoredis").on("click", function() {
+  var stateInfo = document.getElementById('currentStateInfoYDC'),
+  stateTextContent = stateInfo.textContent; //htmlContent = node.innerHTML,
 
-    <body>
-        <!-- WebGL -->
+  var hourInfo = document.getElementById('currentHourInfoYDC'),
+  hourTextContent = hourInfo.textContent;
 
-        <!--example 1-->
-        <!--script type="text/javascript" src="js/webgl/rollingrectangle.js"></script>
-        <script>
-            init();
-            animate();
-        </script-->
+  var weekInfo = document.getElementById('currentWeekInfoYDC'),
+  weekTextContent = weekInfo.textContent;
 
-        <!--example 2: Tangram API, simple demo from https://github.com/tangrams/simple-demo-->
-        <div id="map" class="leaflet-container leaflet-fade-anim"></div>
-        <script type="text/javascript" src="js/webgl/webglmaptangram.js"></script>
-        <script type="text/javascript">
-            window.addEventListener("hashchange",function(){parent.postMessage(window.location.hash, "*")});
-        </script>
+  if (stateTextContent=="" || weekTextContent=="" || hourTextContent=="") {
+      $("#checkInInfoOnRedis").text("State, week, and hour info needed to be got by turning the wheel !!");
+    } else {
+      switch(stateTextContent) {
+        case "BW": $("#exampleStateHourWeekText").text("Fri :: 10 :: BW"); break;
+        case "SCB": $("#exampleStateHourWeekText").text("Tue :: 12 :: SCB"); break;
+        case "MLN": $("#exampleStateHourWeekText").text("Thu :: 10 :: MLN"); break;
+        case "SC": $("#exampleStateHourWeekText").text("Fri :: 9 :: SC"); break;
+        case "IL": $("#exampleStateHourWeekText").text("Fri :: 10 :: IL"); break;
+        case "ELN": $("#exampleStateHourWeekText").text("Sat :: 6 :: ELN"); break;
+        case "NV": $("#exampleStateHourWeekText").text("Fri :: 16 :: NV"); break;
+        case "QC": $("#exampleStateHourWeekText").text("Thu :: 17 :: QC"); break;
+        case "WI": $("#exampleStateHourWeekText").text("Fri :: 11 :: WI"); break;
+        case "AZ": $("#exampleStateHourWeekText").text("Fri :: 14 :: AZ"); break;
+        case "CA": $("#exampleStateHourWeekText").text("Tue :: 13 :: CA"); break;
+        case "KHL": $("#exampleStateHourWeekText").text("Tue :: 23 :: KHL"); break;
+        case "ON": $("#exampleStateHourWeekText").text("Fri :: 20 :: ON"); break;
+        case "FIF": $("#exampleStateHourWeekText").text("Wed :: 9 :: FIF"); break;
+        case "WA": $("#exampleStateHourWeekText").text("Sat :: 10 :: WA"); break;
+        case "EDH": $("#exampleStateHourWeekText").text("Fri :: 8 :: EDH"); break;
+        case "PA": $("#exampleStateHourWeekText").text("Fri :: 10 :: PA"); break;
+        case "NC": $("#exampleStateHourWeekText").text("Thu :: 16 :: NC"); break;
+        default: $("#exampleStateHourWeekText").text("Fri :: 12 :: AZ"); //8889 records
+      }
 
-        <!--End of WebGL-->
+      var queryStr = "businessGeoJSON_"
+      +stateTextContent+"_"
+      +hourTextContent+"_"
+      +weekTextContent;
+      //console.log(queryStr);
 
+      $.post('/redis?q='+queryStr, function(geoJSONfile) {
+        //console.log(geoJSONfile);
+        if(geoJSONfile=="no") {
+          $("#checkInInfoOnRedis").text("No people check in at this time in this state !!");
+        } else {
+          $("#checkInInfoOnRedis").text("The check-in information is shown on the map");
+          showYelpDataGeoJSONOverlay(geoJSONfile, stateTextContent);
+        }
+      });
+    }
+});
+</script>
 
-        <!--panel-->
-        <div class="floating-item-container">
-            <div class="button-container"> <a href="#" class="btn btn-float "> <i class="mdi-social-people-outline"></i> </a> </div>
-            <div class="modal"> <a href="#" class="close"> <i class="mdi-navigation-close"></i> </a>
-                <div class="modal-content">
-                    Social Info
-                    <div id="fb-root">
-                        <div class="fb-login-button" data-max-rows="5" data-size="medium" data-show-faces="true" data-auto-logout-link="true"></div>
-                    </div>
+<div id="divWheelnavDateTime" class="wheelNav"></div>
+<script type="text/javascript">
+var calendar;
+window.onload = function () {
+  setDonutWheel(false);
+};
 
-                </div>
-            </div>
-        </div>
+setDonutWheel = function (isfix) {
+  calendar = new wheelnavdatetime("divWheelnavDateTime");
+  calendar.slicePathType = calendar.wheelTypes.Donut;
+  calendar.selectionEnable = !isfix;
+  calendar.createWheelNav();
+};
+</script>
 
-        <div class="floating-item-container2">
-            <div class="button-container"> <a href="#" class="btn2 btn-float "> <i class="mdi-image-palette"></i> </a> </div>
-            <div class="modal"> <a href="#" class="close"> <i class="mdi-navigation-close"></i> </a>
-                <div class="modal-content">
-                    Color Palette
+<!--End of panel-->
 
-                    <br> <br>
-                    <button type="button" id="submitquerytoredis">Show GeoJSON overlay</button>
-                    <script type="text/javascript">
-                        $("#submitquerytoredis").on("click", function() {
-                            $.post('/redis?query=businessGeoJSON', function(geoJSONfile) {
-                                //console.log(geoJSONfile);
-                                showYelpDataGeoJSONOverlay(geoJSONfile);
-                            });
-                        });
-                    </script>
-
-                    <br> <br>
-                    <button type="button" id="cleanyelpdatalayer">Clean yelp-data layer</button>
-                    <script type="text/javascript">
-                        $("#cleanyelpdatalayer").on("click", function() {
-                            clearLayer();
-                        });
-                    </script>
-                </div>
-            </div>
-        </div>
-
-        <!--End of panel-->
-
-        <bottomtext>
-        <center>
-            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
-            <br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
-            <br><br>
-        </center>
-        </bottomtext>
-    </body>
+</body>
 </html>
