@@ -1,5 +1,9 @@
 package com.yelpdatasetchallenge.dataprocessing;
 
+/**
+ * @author feiyu
+ */
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,11 +13,17 @@ import driven.com.fasterxml.jackson.databind.JsonNode;
 import driven.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DataStoreRedis extends DataStore implements BusinessCheckInWindowInterface {
+  
+  public DataStoreRedis(String logFilePath, String businessFilePath, String checkinFilePath)
+      throws Exception {
+    super(logFilePath, businessFilePath, checkinFilePath);
+  }
+
   Jedis jedis;
 
   @Override
-  public void mapBusinessIDWithItsJson() throws IOException {
-    BufferedReader br = new BufferedReader(new FileReader("src/main/resources/yelp-dataset/yelp_academic_dataset_business.json"));
+  public void saveBusinessInfoToDataStore() throws IOException {
+    BufferedReader br = new BufferedReader(new FileReader(businessFilePath));
     ObjectMapper mapper = new ObjectMapper();
 
     try {
