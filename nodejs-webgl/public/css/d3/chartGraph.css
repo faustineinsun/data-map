@@ -1,0 +1,65 @@
+chartGraphStyle {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: orange;
+  shape-rendering: crispEdges;
+}
+
+.x.axis {
+  fill: orange;
+}
+
+.y.axis {
+  fill: orange;
+}
+
+.line {
+  fill: none;
+  stroke: orange;
+  stroke-width: 2px;
+}
+
+.circle {
+    fill: white;
+    stroke: orange;
+    stroke-width: 2px;
+}
+
+.area {
+    fill: orange;
+    stroke: none;
+    opacity: 0.1;
+}
+
+.zeroline {
+    fill: none;
+    stroke: red;
+    stroke-width: 0.5px;
+    stroke-dasharray: 5 5;
+}
+
+.zerolinetext {
+    fill: red;
+}
+
+.overlay {
+    fill: none;
+    stroke: none;
+    pointer-events: all;
+}
+
+.focusLine {
+    fill: none;
+    stroke: blue;
+    stroke-width: 0.5px;
+}
+
+.focusCircle {
+    fill: red;
+}

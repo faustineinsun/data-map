@@ -21,26 +21,30 @@
   <link rel="shortcut icon" href="img/favicon.png">
 
   <script type="text/javascript" src="js/third-party-lib/jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="js/third-party-lib/d3.min.js"></script>
 
   <link href="css/style.css" rel="stylesheet">
   <script type="text/javascript" src="js/scripts.js"></script>
   <script type="text/javascript" src="js/scalaJS/example-opt.js"></script>
-  <script type="text/javascript" src="js/fb/login.js"></script>
+  <!--script type="text/javascript" src="js/fb/login.js"></script-->
 
   <!-- WebGL -->
   <link href="css/third-party-lib/leaflet.css" rel="stylesheet">
+
+  <link href="css/webgl/overlaybox.css" rel="stylesheet">
+  <link href="css/webgl/webglmap.css" rel="stylesheet">
 
   <script type="text/javascript" src="js/third-party-lib/leaflet.js"></script>
   <script type="text/javascript" src="js/third-party-lib/leaflet-hash.js"></script>
   <script type="text/javascript" src="js/third-party-lib/tangram.min.js"></script>
   <script type="text/javascript" src="js/third-party-lib/three.min.js"></script>
 
-  <link href="css/webgl/overlaybox.css" rel="stylesheet">
-  <link href="css/webgl/webglmap.css" rel="stylesheet">
-
   <script type="text/javascript" src="js/webgl/clickinfobox.js"></script>
 
+  <!--d3 chart-->
+  <script type="text/javascript" src="js/third-party-lib/d3.min.js"></script>
+
+
+  <!--wheelnav-->
   <script type="text/javascript" src="js/third-party-lib/raphael.min.js"></script>
   <script type="text/javascript" src="js/third-party-lib/wheelnav.js"></script>
   <script type="text/javascript" src="js/third-party-lib/wheelnav.datetime.js"></script>
@@ -75,7 +79,8 @@ window.addEventListener("hashchange",function(){parent.postMessage(window.locati
 
 
 <!--panel-->
-<div class="floating-item-container">
+
+<!--div class="floating-item-container">
   <div class="button-container"> <a href="#" class="btn btn-float "> <i class="mdi-image-palette"></i> </a> </div>
   <div class="modal"> <a href="#" class="close"> <i class="mdi-navigation-close"></i> </a>
     <div class="modal-content">
@@ -86,7 +91,11 @@ window.addEventListener("hashchange",function(){parent.postMessage(window.locati
 
   </div>
 </div>
-</div>
+</div-->
+
+<chartGraphStyle id="chartGraphJS"></chartGraphStyle>
+<link href="css/d3/chartGraph.css" rel="stylesheet">
+<script type="text/javascript" src="js/d3/chartGraph.js"></script>
 
 <div id="checkInInfoOnRedis" class="checkInInfoOnRedisStyle"></div>
 <div id="textSchema" class="textSchemaStyle"></div>
@@ -113,7 +122,7 @@ $("#submitquerytoredis").on("click", function() {
   weekTextContent = weekInfo.textContent;
 
   if (stateTextContent=="" || weekTextContent=="" || hourTextContent=="") {
-      $("#checkInInfoOnRedis").text("State, week, and hour info needed to be got by turning the wheel !!");
+      $("#checkInInfoOnRedis").text("Please specify state, week, and hour info by turning the wheel");
     } else {
       switch(stateTextContent) {
         case "BW": $("#exampleStateHourWeekText").text("Fri :: 10 :: BW"); break;
@@ -146,7 +155,7 @@ $("#submitquerytoredis").on("click", function() {
       $.post('/redis?q='+queryStr, function(geoJSONfile) {
         //console.log(geoJSONfile);
         if(geoJSONfile=="no") {
-          $("#checkInInfoOnRedis").text("No people check in at this time in this state !!");
+          $("#checkInInfoOnRedis").text("No people check in at this time in this state!! Try example as follows");
         } else {
           $("#checkInInfoOnRedis").text("The check-in information is shown on the map");
           showYelpDataGeoJSONOverlay(geoJSONfile, stateTextContent);
@@ -172,6 +181,7 @@ setDonutWheel = function (isfix) {
 </script>
 
 <!--End of panel-->
+
 
 </body>
 </html>
