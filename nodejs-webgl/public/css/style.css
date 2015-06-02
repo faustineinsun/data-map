@@ -51,14 +51,14 @@ bottomtext {
 }
 
 .exampleStateHourWeekStyle {
-  bottom: 290px;
+  bottom: 288px;
   right: 180px;
   position: absolute;
   color:rgb(254, 173, 51);
 }
 
 .exampleStateHourWeekTextStyle {
-  bottom: 290px;
+  bottom: 288px;
   right: 70px;
   position: absolute;
   color:rgb(254, 173, 51);
@@ -85,15 +85,25 @@ bottomtext {
   color:rgb(254, 173, 51);
 }
 
-
-.buttonShowGeoJSONOverlay {
-  bottom: 320px;
-  right: 100px;
+.showDataOnMapButton {
+  bottom: 310px;
+  right: 85px;
   position: absolute;
+	background-color:#ffc477;
+	-moz-border-radius:22px;
+	-webkit-border-radius:22px;
+	border-radius:22px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	padding:3px 8px;
+	text-decoration:none;
 }
-
-.buttonCleanGeoJSONOverlay {
-  bottom: 320px;
-  right: 50px;
+.showDataOnMapButton:hover {
+	background-color:#fb9e25;
+}
+.showDataOnMapButton:active {
   position: absolute;
 }
