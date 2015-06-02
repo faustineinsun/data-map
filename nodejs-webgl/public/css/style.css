@@ -27,3 +27,83 @@ bottomtext {
     bottom: 0;
     width: 100%;
 }
+
+.wheelNav {
+    height: 320px;
+    width: 320px;
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+}
+
+.checkInInfoOnRedisStyle {
+  bottom: 380px;
+  right: 20px;
+  position: absolute;
+  color:rgb(254, 173, 51);
+}
+
+.textSchemaStyle {
+  bottom: 360px;
+  right: 80px;
+  position: absolute;
+  color:rgb(254, 173, 51);
+}
+
+.exampleStateHourWeekStyle {
+  bottom: 288px;
+  right: 180px;
+  position: absolute;
+  color:rgb(254, 173, 51);
+}
+
+.exampleStateHourWeekTextStyle {
+  bottom: 288px;
+  right: 70px;
+  position: absolute;
+  color:rgb(254, 173, 51);
+}
+
+.weekInfoText {
+  bottom: 340px;
+  right: 180px;
+  position: absolute;
+  color:rgb(254, 173, 51);
+}
+
+.hourInfoText {
+  bottom: 340px;
+  right: 140px;
+  position: absolute;
+  color:rgb(254, 173, 51);
+}
+
+.stateInfoText {
+  bottom: 340px;
+  right: 85px;
+  position: absolute;
+  color:rgb(254, 173, 51);
+}
+
+.showDataOnMapButton {
+  bottom: 310px;
+  right: 85px;
+  position: absolute;
+	background-color:#ffc477;
+	-moz-border-radius:22px;
+	-webkit-border-radius:22px;
+	border-radius:22px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	padding:3px 8px;
+	text-decoration:none;
+}
+.showDataOnMapButton:hover {
+	background-color:#fb9e25;
+}
+.showDataOnMapButton:active {
+  position: absolute;
+}

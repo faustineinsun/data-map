@@ -3,14 +3,21 @@ package com.yelpdatasetchallenge.dataprocessing;
  * @author feiyu
  */
 
-import java.io.IOException;
 import java.io.PrintWriter;
 
 abstract class DataStore  {
   protected PrintWriter logWriter;
+  protected String logFilePath; 
+  protected String businessFilePath; 
+  protected String checkinFilePath;
 
-  public void run(String logFilePath) throws IOException{
-    logWriter = new PrintWriter(logFilePath, "UTF-8");
+  public DataStore (String logFilePath, String businessFilePath, String checkinFilePath) throws Exception {
+    this.logWriter = new PrintWriter(logFilePath, "UTF-8");
+    this.businessFilePath = businessFilePath;
+    this.checkinFilePath = checkinFilePath;
+  }
+
+  public void run() throws Exception{
 
     callMethods();
 
@@ -18,5 +25,5 @@ abstract class DataStore  {
     logWriter.close();
   }
 
-  abstract public void callMethods() throws IOException;
+  abstract public void callMethods() throws Exception;
 }
