@@ -72,7 +72,7 @@ window.addEventListener("hashchange",function(){parent.postMessage(window.locati
 <bottomtext>
   <center>
     <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
-    <br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+    <br>This work is licensed under a <br><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
     <br><br>
   </center>
 </bottomtext>
@@ -92,6 +92,8 @@ window.addEventListener("hashchange",function(){parent.postMessage(window.locati
   </div>
 </div>
 </div-->
+
+<div class="panel">
 
 <chartGraphStyle id="chartGraphJS"></chartGraphStyle>
 <link href="css/d3/chartGraph.css" rel="stylesheet">
@@ -113,7 +115,7 @@ $.post('/redis?q='+queryStr, function(geoJSONfile) {
   showYelpDataGeoJSONOverlay(geoJSONfile, "EDH");
 });
 
-$("#checkInInfoOnRedis").text("Please choose the state, week, and hour");
+$("#checkInInfoOnRedis").html("&smashp; Please specify the state, week, and hour information by turning the wheel ");
 $("#textSchema").text("Week :: Hour  ::  State");
 $("#exampleStateHourWeek").text("Example:");
 $("#exampleStateHourWeekText").text("Fri :: 6 :: EDH");
@@ -129,7 +131,7 @@ $("#submitquerytoredis").on("click", function() {
   weekTextContent = weekInfo.textContent;
 
   if (stateTextContent=="" || weekTextContent=="" || hourTextContent=="") {
-      $("#checkInInfoOnRedis").text("Please specify state, week, and hour info by turning the wheel");
+      $("#checkInInfoOnRedis").html("&cross; Please specify all of the state, week, and hour information by turning the wheel ");
     } else {
       switch(stateTextContent) {
         case "BW": $("#exampleStateHourWeekText").text("Fri :: 10 :: BW"); break;
@@ -162,9 +164,9 @@ $("#submitquerytoredis").on("click", function() {
       $.post('/redis?q='+queryStr, function(geoJSONfile) {
         //console.log(geoJSONfile);
         if(geoJSONfile=="no") {
-          $("#checkInInfoOnRedis").text("No people check in at this time in this state!! Try example as follows");
+          $("#checkInInfoOnRedis").html("&smashp; No people check in at this time in this state !! <br> Try example as follows");
         } else {
-          $("#checkInInfoOnRedis").text("The check-in information is shown on the map");
+          $("#checkInInfoOnRedis").html("&check; The check-in information now is shown on the map ");
           showYelpDataGeoJSONOverlay(geoJSONfile, stateTextContent);
         }
       });
@@ -189,8 +191,16 @@ setDonutWheel = function (isfix) {
 
 <div id="showDayInWeekCount" class="showDayInWeekCountStyle"></div>
 
+</div>
+
 <!--End of panel-->
 
+<a href="#" id = "clickShowWholeMapButton" class="showWholeMapButton">Show Whole Map</a>
+<script type="text/javascript">
+$("#clickShowWholeMapButton").on("click", function() {
+  map.setView([40.78,-14.06], 3);
+});
+</script>
 
 </body>
 </html>

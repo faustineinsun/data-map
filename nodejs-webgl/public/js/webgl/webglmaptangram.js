@@ -1,14 +1,18 @@
 var map = L.map('map');
 var layer = Tangram.leafletLayer({
     scene: 'assets/scene.yaml',
-    attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
+    attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> '
+    +'| &copy; OSM contributors '
+    +'| <a href="https://mapzen.com/" target="_blank">Mapzen</a> '
+    +'| <a href="https://github.com/tangrams/tangram-sandbox" target="_blank">tangram-sandbox</a> '
+    +'| <a href="http://wheelnavjs.softwaretailoring.net/" target="_blank">Wheelnav.js</a>'
 });
 
 layer.addTo(map);
 //map.setView([37.7871,-122.4247], 14); // San Fransico
 //map.setView([39.7357,-104.9992], 14); // Geojson on Leaflet example
 //map.setView([36.1348,-115.0344], 11); // State NV in USA
-map.setView([45.89,-30.76], 3);
+map.setView([40.78,-14.06], 3)
 
 var hash = new L.Hash(map);
 
@@ -48,15 +52,16 @@ var onEachFeature = function(feature, layer) {
           bottom: "50px",
           left: "50px",
           zIndex: 1002,
-          backgroundColor: "LightCyan",
-          opacity: 0.85,
+          backgroundColor: "LavenderBlush",
+          opacity: 0.8,
           padding: "8px",
           border: "1px solid #ccc"
         }
       });
       // Insert a headline into that popup
+      var addressText = feature.properties.businessAddress.split("\\n").join(" ");;
       var hed = $("<div></div>", {
-        text: feature.properties.businessAddress,
+        text: addressText,
         css: {fontSize: "16px", marginBottom: "3px", color: "SlateBlue"}
       }).appendTo(popup);
 
@@ -94,25 +99,25 @@ function showYelpDataGeoJSONOverlay(geojsonfile, stateTextContent) {
     }
 
     switch(stateTextContent) {
-      case "BW": map.setView([48.9987,8.3331], 11); break;
-      case "SCB": map.setView([55.8930,-3.0597], 9); break;
-      case "MLN": map.setView([55.9169,-3.1258], 12); break;
-      case "SC": map.setView([35.0246,-80.9339], 12); break;
-      case "IL": map.setView([40.1078,-88.2266], 13); break;
-      case "ELN": map.setView([55.9269,-3.3673], 9); break;
-      case "NV": map.setView([36.1243,-115.0907], 11); break;
-      case "QC": map.setView([45.5051,-73.5892], 11); break;
-      case "WI": map.setView([43.0982,-89.3333], 11); break;
-      case "AZ": map.setView([33.3431,-111.7804], 9); break;
+      case "BW": map.setView([49.0062,8.4801], 12); break;
+      case "SCB": map.setView([55.8975,-3.0089], 11); break;
+      case "MLN": map.setView([55.9210,-3.0975], 12); break;
+      case "SC": map.setView([35.0268,-80.8813], 12); break;
+      case "IL": map.setView([40.1056,-88.1838], 13); break;
+      case "ELN": map.setView([55.9617,-3.0000], 11); break;
+      case "NV": map.setView([36.1187,-115.0063], 11); break;
+      case "QC": map.setView([45.5066,-73.5713], 11); break;
+      case "WI": map.setView([43.0686,-89.2426], 11); break;
+      case "AZ": map.setView([33.4492,-111.7021], 10); break;
       case "CA": map.setView([36.1538,-115.1017], 12); break;
-      case "KHL": map.setView([55.9792,-3.1647], 10); break;
-      case "ON": map.setView([43.4205,-80.3622], 10); break;
-      case "FIF": map.setView([56.0164,-3.3285], 9); break;
-      case "WA": map.setView([36.0855,-115.2054], 11); break;
+      case "KHL": map.setView([55.9621,-3.0782], 11); break;
+      case "ON": map.setView([43.4378,-80.3955], 12); break;
+      case "FIF": map.setView([56.0419,-3.2952], 11); break;
+      case "WA": map.setView([36.1187,-114.9795], 11); break;
       case "EDH": map.setView([55.9458,-3.1723], 13); break;
-      case "PA": map.setView([40.4053,-79.9221], 12); break;
-      case "NC": map.setView([35.1758,-80.8017], 11); break;
-      default: map.setView([45.89,-30.76], 3);
+      case "PA": map.setView([40.4212,-79.9032], 12); break;
+      case "NC": map.setView([35.1943,-80.7111], 11); break;
+      default: map.setView([40.78,-14.06], 3);
     }
 
     // Show GeoJSON overlay

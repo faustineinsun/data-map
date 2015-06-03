@@ -23,8 +23,8 @@ var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLab
 
   var margin = {
     top: 15,
-    left: 50,
-    right: 15,
+    left: 38,
+    right: 20,
     bottom: 25
   };
 
@@ -166,5 +166,5 @@ function showDayInWeekCountChart(data) {
   //var data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
   data = JSON.parse(data);
   $("#chartGraphJS").empty();
-  drawLineGraph(400, 350, data, "Check-in Count", "Day in Week");
+  drawLineGraph(380, 400, data, "Check-in Count", "Day in Week");
 }
