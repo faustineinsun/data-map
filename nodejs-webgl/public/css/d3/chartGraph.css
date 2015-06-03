@@ -7,45 +7,45 @@ chartGraphStyle {
 .axis path,
 .axis line {
   fill: none;
-  stroke: orange;
+  stroke: LightSeaGreen;
   shape-rendering: crispEdges;
 }
 
 .x.axis {
-  fill: orange;
+  fill: LightSeaGreen;
 }
 
 .y.axis {
-  fill: orange;
+  fill: LightSeaGreen;
 }
 
 .line {
   fill: none;
-  stroke: orange;
+  stroke: LightSeaGreen;
   stroke-width: 2px;
 }
 
 .circle {
     fill: white;
-    stroke: orange;
+    stroke: LightSeaGreen;
     stroke-width: 2px;
 }
 
 .area {
-    fill: orange;
+    fill: LightSeaGreen;
     stroke: none;
     opacity: 0.1;
 }
 
 .zeroline {
     fill: none;
-    stroke: red;
+    stroke: PaleGreen;
     stroke-width: 0.5px;
     stroke-dasharray: 5 5;
 }
 
 .zerolinetext {
-    fill: red;
+    fill: PaleGreen;
 }
 
 .overlay {
@@ -56,10 +56,10 @@ chartGraphStyle {
 
 .focusLine {
     fill: none;
-    stroke: blue;
+    stroke: LightSeaGreen;
     stroke-width: 0.5px;
 }
 
 .focusCircle {
-    fill: red;
+    fill: PaleGreen;
 }

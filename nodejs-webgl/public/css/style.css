@@ -29,8 +29,8 @@ bottomtext {
 }
 
 .wheelNav {
-    height: 320px;
-    width: 320px;
+    height: 310px;
+    width: 310px;
     bottom: 0px;
     right: 0px;
     position: absolute;
@@ -40,49 +40,49 @@ bottomtext {
   bottom: 380px;
   right: 20px;
   position: absolute;
-  color:rgb(254, 173, 51);
+  color:LightSeaGreen;
 }
 
 .textSchemaStyle {
   bottom: 360px;
   right: 80px;
   position: absolute;
-  color:rgb(254, 173, 51);
+  color:LightSeaGreen;
 }
 
 .exampleStateHourWeekStyle {
   bottom: 288px;
   right: 180px;
   position: absolute;
-  color:rgb(254, 173, 51);
+  color: orange;
 }
 
 .exampleStateHourWeekTextStyle {
   bottom: 288px;
   right: 70px;
   position: absolute;
-  color:rgb(254, 173, 51);
+  color: orange;
 }
 
 .weekInfoText {
   bottom: 340px;
   right: 180px;
   position: absolute;
-  color:rgb(254, 173, 51);
+  color:LightSeaGreen;
 }
 
 .hourInfoText {
   bottom: 340px;
   right: 140px;
   position: absolute;
-  color:rgb(254, 173, 51);
+  color:LightSeaGreen;
 }
 
 .stateInfoText {
   bottom: 340px;
   right: 85px;
   position: absolute;
-  color:rgb(254, 173, 51);
+  color:LightSeaGreen;
 }
 
 .showDataOnMapButton {
