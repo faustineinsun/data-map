@@ -106,11 +106,18 @@ window.addEventListener("hashchange",function(){parent.postMessage(window.locati
 <div id="exampleStateHourWeekText" class="exampleStateHourWeekTextStyle"></div>
 <br>
 <a href="#" id="submitquerytoredis" class="showDataOnMapButton">Show Data on Map</a>
+
 <script type="text/javascript">
+var queryStr = "businessGeoJSON_EDH_8_Fri";
+$.post('/redis?q='+queryStr, function(geoJSONfile) {
+  showYelpDataGeoJSONOverlay(geoJSONfile, "EDH");
+});
+
 $("#checkInInfoOnRedis").text("Please choose the state, week, and hour");
 $("#textSchema").text("Week :: Hour  ::  State");
 $("#exampleStateHourWeek").text("Example:");
 $("#exampleStateHourWeekText").text("Fri :: 6 :: EDH");
+
 $("#submitquerytoredis").on("click", function() {
   var stateInfo = document.getElementById('currentStateInfoYDC'),
   stateTextContent = stateInfo.textContent; //htmlContent = node.innerHTML,
@@ -179,6 +186,8 @@ setDonutWheel = function (isfix) {
   calendar.createWheelNav();
 };
 </script>
+
+<div id="showDayInWeekCount" class="showDayInWeekCountStyle"></div>
 
 <!--End of panel-->
 

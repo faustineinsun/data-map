@@ -12,3 +12,16 @@ FROM  Businesses INNER JOIN Business_checkin
 ON Businesses.`BusinessId` = Business_checkin.`BusinessId`
 WHERE Businesses.`State` = 'NV'
 AND Business_checkin.`Hour` = '19' AND Business_checkin.`Week` = '5';
+
+SELECT Businesses.`BusinessId`, Business_checkin.`Count`, Business_checkin.`HourWeekTimeWindow`
+FROM  Businesses INNER JOIN Business_checkin
+ON Businesses.`BusinessId` = Business_checkin.`BusinessId`
+WHERE Businesses.`State` = 'NV';
+
+SELECT Businesses.*, Business_checkin.`HourWeekTimeWindow`, Business_checkin.`Count`, Checkin.`CheckinTimeWindowArray`
+FROM  Businesses INNER JOIN Business_checkin
+ON Businesses.`BusinessId` = Business_checkin.`BusinessId`
+INNER JOIN Checkin
+ON Businesses.`BusinessId` = Checkin.`BusinessId`
+WHERE Businesses.`State` = 'NV'
+AND Business_checkin.`Hour` = '19' AND Business_checkin.`Week` = '5';

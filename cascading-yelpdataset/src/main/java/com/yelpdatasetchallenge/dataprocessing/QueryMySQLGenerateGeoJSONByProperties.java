@@ -1,5 +1,6 @@
 package com.yelpdatasetchallenge.dataprocessing;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -19,35 +20,39 @@ import driven.com.fasterxml.jackson.databind.ObjectWriter;
 {
     "type": "FeatureCollection",
     "features": [
-    {
+      {
         "type": "Feature",
         "properties": {
-            "businessName": "business name 1",
-            "businessCategories":"category 1, category 2",
-            "businessAddress":"address 1",
-            "checkInCountTimeWindow":"6",
-            "timeWindow":"17-3"
+          "businessId":"adfa]239r90a9df",
+          "businessName": "Checkers Rally's",
+          "businessAddress": "\"7210 S Durango Dr\\nSouthwest\\nLas Vegas, NV 89113\"",
+          "businessCategories": "[\"Burgers\",\"Fast Food\",\"Sandwiches\",\"Restaurants\"]",
+          "dayInWeekCount":[[0,9],[1,3],[2,100],[3,5],[4,7],[5,3],[6,0]],
+          "checkInCountTimeWindow":"6",
+          "timeWindow":"17-3"
         },
         "geometry": {
-            "type": "Point",
-            "coordinates": [-104.98999178409578, 39.74683938093909]
+          "type": "Point",
+          "coordinates": [-115.279,36.0572]
         }
-    },{
+      },{
         "type": "Feature",
         "properties": {
-            "businessName": "business name 2",
-            "businessCategories":"category 3, category 2",
-            "businessAddress":"address 2",
-            "checkInCountTimeWindow":"2",
-            "timeWindow":"15-4"
+          "businessId":"adsafadffa]239r90a9df",
+          "businessName": "Red Rice",
+          "businessAddress": "\"9400 S  Eastern Ave\\nSte 106A\\nSoutheast\\nLas Vegas, NV 89123\"",
+          "businessCategories": "[\"Food\",\"Ethnic Food\",\"Specialty Food\"]",
+          "dayInWeekCount":[[0,900],[1,3000],[2,100],[3,5000],[4,700],[5,30],[6,1000]],
+          "checkInCountTimeWindow":"6",
+          "timeWindow":"17-3"
         },
         "geometry": {
-            "type": "Point",
-            "coordinates": [-104.98689115047450, 39.747924136466561]
+          "type": "Point",
+          "coordinates": [-115.118,36.0184]
         }
-    }
+      }
     ]
-};
+  };
  * http://wiki.fasterxml.com/JacksonInFiveMinutes
  * 
  * there are 18 states info in the Yelp Dataset:
@@ -68,15 +73,17 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
 
   private void queryDB(String State, String Hour, String Week) throws SQLException {
     preparedStatement = connect.prepareStatement(
-      "SELECT Businesses.*, Business_checkin.`Count`, Business_checkin.`Hour`,  Business_checkin.`Week` " 
+      "SELECT Businesses.*, Business_checkin.`HourWeekTimeWindow`, Business_checkin.`Count`, Checkin.`CheckinTimeWindowArray`, Business_checkin.`Hour`,  Business_checkin.`Week` " 
           +"FROM  Businesses INNER JOIN Business_checkin "
           +"ON Businesses.`BusinessId` = Business_checkin.`BusinessId` "
+          +"INNER JOIN Checkin "
+          +"ON Businesses.`BusinessId` = Checkin.`BusinessId` "
           +"WHERE Businesses.`State` = ? "
           +"AND Business_checkin.`Hour` = ? AND Business_checkin.`Week` = ?");
     preparedStatement.setString(1, State);
     preparedStatement.setString(2, Hour);
     preparedStatement.setString(3, Week);
-    // System.out.println("------"+preparedStatement.toString());
+    //System.out.println("------"+preparedStatement.toString());
 
     resultSet = preparedStatement.executeQuery();
 
@@ -95,12 +102,14 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
     while (resultSet.next()) {
 
       GeoJSONBusinessFeatureProperties geoJsonFeatureProp = new GeoJSONBusinessFeatureProperties();
+      geoJsonFeatureProp.setBusinessId(resultSet.getString("BusinessId"));
       geoJsonFeatureProp.setBusinessName(resultSet.getString("Name"));
-      geoJsonFeatureProp.setBusinessCategories(resultSet.getString("Category"));
       geoJsonFeatureProp.setBusinessAddress(resultSet.getString("FullAddress"));
+      geoJsonFeatureProp.setBusinessCategories(resultSet.getString("Category"));
+      geoJsonFeatureProp.setDayInWeekCount(resultSet.getString("CheckinTimeWindowArray"));
       geoJsonFeatureProp.setCheckInCountTimeWindow(resultSet.getString("Count"));
       geoJsonFeatureProp.setTimeWindow(resultSet.getString("Hour")+":"+resultSet.getString("Week"));
-      // System.out.println("geoJsonFeatureProp: "+geoJsonFeatureProp.toString());
+      //System.out.println("geoJsonFeatureProp: "+geoJsonFeatureProp.toString());
 
       GeoJSONBusinessFeatureGeometry geoJsonFeatureGeo = new GeoJSONBusinessFeatureGeometry();
       geoJsonFeatureGeo.setType("Point");
@@ -132,13 +141,15 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
       // save generated GeoJSON file on local machine
       /*
        * Do this later for demo only
-      ObjectMapper businessFeatureClctnMapper = new ObjectMapper();
-      businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/json/businessFeatureClctn"
-        +"_"+State
-        +"_"+Hour
-        +"_"+Week
-        +".json"), businessFeatureClctn);
        */
+      if (State.equals("NV")&&Hour.equals("13")&&Week.equals("5")) {
+        ObjectMapper businessFeatureClctnMapper = new ObjectMapper();
+        businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/json/businessFeatureClctn"
+            +"_"+State
+            +"_"+Hour
+            +"_"+Week
+            +".json"), businessFeatureClctn);
+      }
 
       // save generated GeoJSON file to Redis in-memory database 
       ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -149,8 +160,8 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
       // Statistics
       System.out.println(State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
       if (numBsnsInStateTimeWindow==8889) {
-        this.logWriter.println("\n"+State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
         /*
+        this.logWriter.println("\n"+State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
         businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/json/businessFeatureClctn"
             +"_"+State
             +"_"+Hour

@@ -162,4 +162,9 @@ var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLab
   });
 };
 
-drawLineGraph(400, 350, data, "Check-in Count", "Day in Week");
+function showDayInWeekCountChart(data) {
+  //var data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
+  data = JSON.parse(data);
+  $("#chartGraphJS").empty();
+  drawLineGraph(400, 350, data, "Check-in Count", "Day in Week");
+}

@@ -39,13 +39,13 @@ chartGraphStyle {
 
 .zeroline {
     fill: none;
-    stroke: PaleGreen;
+    stroke: LightSeaGreen;
     stroke-width: 0.5px;
     stroke-dasharray: 5 5;
 }
 
 .zerolinetext {
-    fill: PaleGreen;
+    fill: LightSeaGreen;
 }
 
 .overlay {
@@ -56,10 +56,10 @@ chartGraphStyle {
 
 .focusLine {
     fill: none;
-    stroke: LightSeaGreen;
+    stroke: SlateBlue;
     stroke-width: 0.5px;
 }
 
 .focusCircle {
-    fill: PaleGreen;
+    fill: SlateBlue;
 }

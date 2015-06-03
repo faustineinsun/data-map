@@ -5,11 +5,21 @@ package com.yelpdatasetchallenge.objects;
  */
 
 public class GeoJSONBusinessFeatureProperties {
+  private String businessId; 
   private String businessName;
-  private String businessCategories;
   private String businessAddress;
+  private String businessCategories;
+  private String dayInWeekCount;
   private String checkInCountTimeWindow; 
   private String timeWindow;
+
+  public void setBusinessId(String businessId) {
+    this.businessId = businessId;
+  }
+
+  public String getBusinessId() {
+    return this.businessId; 
+  }
 
   public void setBusinessName(String businessName) {
     this.businessName = businessName;
@@ -17,6 +27,14 @@ public class GeoJSONBusinessFeatureProperties {
 
   public String getBusinessName() {
     return this.businessName; 
+  }
+
+  public void setBusinessAddress(String businessAddress) {
+    this.businessAddress = businessAddress;
+  }
+
+  public String getBusinessAddress() {
+    return this.businessAddress; 
   }
 
   public void setBusinessCategories(String businessCategories) {
@@ -27,12 +45,12 @@ public class GeoJSONBusinessFeatureProperties {
     return this.businessCategories; 
   }
 
-  public void setBusinessAddress(String businessAddress) {
-    this.businessAddress = businessAddress;
+  public void setDayInWeekCount(String dayInWeekCount) {
+    this.dayInWeekCount = dayInWeekCount;
   }
 
-  public String getBusinessAddress() {
-    return this.businessAddress; 
+  public String getDayInWeekCount() {
+    return this.dayInWeekCount; 
   }
 
   public void setCheckInCountTimeWindow(String checkInCountTimeWindow) {
@@ -53,9 +71,11 @@ public class GeoJSONBusinessFeatureProperties {
 
   public String toString() {
     return "{"
-        + "businessName: " + businessName 
-        + ", businessCategories: " + businessCategories 
+        + "businessId: " + businessId 
+        + ", businessName: " + businessName 
         + ", businessAddress: " + businessAddress 
+        + ", businessCategories: " + businessCategories 
+        + ", dayInWeekCount: " + dayInWeekCount 
         + ", checkInCountTimeWindow: " + checkInCountTimeWindow 
         + ", timeWindow: " + timeWindow 
         + "}";

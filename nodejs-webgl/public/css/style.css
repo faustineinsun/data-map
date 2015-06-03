@@ -1,6 +1,6 @@
 body {
     background:#fff;
-    color:#000;
+    color:LightSeaGreen;
     padding:0px;
     margin:0px;
     border: 0px;
@@ -10,11 +10,11 @@ body {
     text-align:center;
 }
 a {
-    color: #ff0080;
+    color: SlateBlue;
     text-decoration: none;
 }
 a:hover {
-    color: #fff;
+    color: MediumAquaMarine;
 }
 canvas {
     pointer-events:none;
@@ -54,42 +54,42 @@ bottomtext {
   bottom: 288px;
   right: 180px;
   position: absolute;
-  color: orange;
+  color: SlateBlue;
 }
 
 .exampleStateHourWeekTextStyle {
   bottom: 288px;
   right: 70px;
   position: absolute;
-  color: orange;
+  color: SlateBlue;
 }
 
 .weekInfoText {
   bottom: 340px;
   right: 180px;
   position: absolute;
-  color:LightSeaGreen;
+  color:SlateBlue;
 }
 
 .hourInfoText {
   bottom: 340px;
   right: 140px;
   position: absolute;
-  color:LightSeaGreen;
+  color:SlateBlue;
 }
 
 .stateInfoText {
   bottom: 340px;
   right: 85px;
   position: absolute;
-  color:LightSeaGreen;
+  color:SlateBlue;
 }
 
 .showDataOnMapButton {
   bottom: 310px;
   right: 85px;
   position: absolute;
-	background-color:#ffc477;
+	background-color:SlateBlue;
 	-moz-border-radius:22px;
 	-webkit-border-radius:22px;
 	border-radius:22px;
@@ -102,8 +102,16 @@ bottomtext {
 	text-decoration:none;
 }
 .showDataOnMapButton:hover {
-	background-color:#fb9e25;
+	background-color:SlateBlue;
+  opacity: 0.5;
 }
 .showDataOnMapButton:active {
   position: absolute;
+}
+
+.showDayInWeekCountStyle {
+    right: 80px;
+    top: 25px;
+    color: SlateBlue;
+    position: absolute;
 }

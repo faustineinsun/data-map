@@ -77,10 +77,10 @@ wheelnavdatetime.prototype.initWheelNav = function (wheelnav, minPercent, maxPer
 
     wheelnav.colors = new Array("#EEE");
 
-    wheelnav.slicePathAttr = { fill: "#EEE", stroke: "#111", "stroke-width": 0, cursor: 'pointer', opacity: 0.2 };
-    wheelnav.sliceSelectedAttr = { fill: "LightSeaGreen", stroke: "#2f7656", "stroke-width": 0, cursor: 'default', opacity: 0.8 };
+    wheelnav.slicePathAttr = { fill: "#EEE", stroke: "#111", "stroke-width": 0, cursor: 'pointer', opacity: 0.3 };
+    wheelnav.sliceSelectedAttr = { fill: "SlateBlue", stroke: "#2f7656", "stroke-width": 0, cursor: 'default', opacity: 0.8 };
 
-    wheelnav.titleAttr = { font: '100 18px sans-serif', fill: "#111", stroke: "none", cursor: 'pointer', opacity: 0.6 };
+    wheelnav.titleAttr = { font: '100 18px sans-serif', fill: "LightSeaGreen", stroke: "none", cursor: 'pointer', opacity: 0.8 };
     wheelnav.titleSelectedAttr = { font: '100 18px sans-serif', fill: "#FFF", cursor: 'default', opacity: 0.8 };
 
     wheelnav.animateeffect = "linear";

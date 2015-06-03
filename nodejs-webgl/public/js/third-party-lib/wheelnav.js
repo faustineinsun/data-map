@@ -16,7 +16,7 @@
 /* Documentation: http://wheelnavjs.softwaretailoring.net/documentation/core.html          */
 /* ======================================================================================= */
 /* Modified by faustineinsun at May 2015                                                   */
-/* Modified:   line 86, and wheelnav.prototype.navigateWheel                               */
+/* Modified:line 86, wheelnav.prototype.navigateWheel, wheelnavItem.prototype.styleNavItem */
 /* added:                                                                                  */
 /* wheelnav.prototype.updateStateInfoYDC                                                   */
 /* wheelnav.prototype.updateHourInfoYDC                                                    */
@@ -1567,7 +1567,7 @@ wheelnavItem.prototype.styleNavItem = function () {
         this.sliceSelectedAttr = { stroke: "#111", "stroke-width": 0, cursor: 'default', "fill-opacity": 1 };
 
         this.titleAttr = { font: this.titleFont, fill: "#333", stroke: "none", cursor: 'pointer' };
-        this.titleHoverAttr = { font: this.titleFont, fill: "#222", cursor: 'pointer', stroke: "none" };
+        this.titleHoverAttr = { font: this.titleFont, fill: "SlateBlue", cursor: 'pointer', stroke: "none" };
         this.titleSelectedAttr = { font: this.titleFont, fill: "#fff", cursor: 'default' };
 
         this.linePathAttr = { stroke: "#444", "stroke-width": 1, cursor: 'pointer' };

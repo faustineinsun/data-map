@@ -16,15 +16,73 @@ var busineslayer;
 
 // Geojson on Leaflet
 // reference http://leafletjs.com/examples/geojson.html
-function onEachFeature(feature, layer) {
-    var popupContent = "<p><b>" + feature.properties.businessName +"</b></p>"
-        +"<b>Address</b>: " +feature.properties.businessAddress
-        +"<br><b>Latitude and Longitude</b>: " + feature.geometry.coordinates
-        +"<br><b>Categories</b>: " +feature.properties.businessCategories
-        +"<br>In time window <b>"+feature.properties.timeWindow+"</b> there are <b>"+feature.properties.checkInCountTimeWindow + "</b> check-in count";
+// reference http://palewi.re/posts/2012/03/26/leaflet-recipe-hover-events-features-and-polygons/
+var defaultStyle = {
+  radius: 7,
+  fillColor: "LightSeaGreen",
+  color: "PaleGreen",
+  weight: 0.5,
+  opacity: 0.5,
+  fillOpacity: 0.8
+};
+var highlightStyle = {
+  radius: 8.2,
+  fillColor: "SlateBlue",
+  color: "PaleGreen",
+  weight: 0.5,
+  opacity: 0.5,
+  fillOpacity: 0.8
+};
 
-    layer.bindPopup(popupContent);
-}
+var onEachFeature = function(feature, layer) {
+  // mouseover and mouseout
+  (function(layer, properties) {
+    layer.on("mouseover", function (e) {
+      layer.setStyle(highlightStyle);
+
+      // Create a popup with a unique ID linked to this record
+      var popup = $("<div></div>", {
+        id: "popup-"+feature.geometry.businessId,
+        css: {
+          position: "absolute",
+          bottom: "50px",
+          left: "50px",
+          zIndex: 1002,
+          backgroundColor: "LightCyan",
+          opacity: 0.85,
+          padding: "8px",
+          border: "1px solid #ccc"
+        }
+      });
+      // Insert a headline into that popup
+      var hed = $("<div></div>", {
+        text: feature.properties.businessAddress,
+        css: {fontSize: "16px", marginBottom: "3px", color: "SlateBlue"}
+      }).appendTo(popup);
+
+      $("#showDayInWeekCount").text(feature.properties.businessName);
+      var data = feature.properties.dayInWeekCount;
+
+      showDayInWeekCountChart(data);
+
+      popup.appendTo("#map");
+    });
+    layer.on("mouseout", function (e) {
+      layer.setStyle(defaultStyle);
+      $("#popup-" + feature.geometry.businessId).remove();
+    });
+  })(layer, feature.properties);
+
+  // click points
+  /*
+  var popupContent = "<p><b>" + feature.properties.businessName +"</b></p>"
+  +"<b>Address</b>: " +feature.properties.businessAddress
+  +"<br><b>Latitude and Longitude</b>: " + feature.geometry.coordinates
+  +"<br><b>Categories</b>: " +feature.properties.businessCategories
+  +"<br>In time window <b>"+feature.properties.timeWindow+"</b> there are <b>"+feature.properties.checkInCountTimeWindow + "</b> check-in count";
+  layer.bindPopup(popupContent);
+  */
+};
 
 //$.getJSON("assets/yelpgeojson/businessFeatureClctn.json", function(json) {
 //});
@@ -59,6 +117,44 @@ function showYelpDataGeoJSONOverlay(geojsonfile, stateTextContent) {
 
     // Show GeoJSON overlay
     var businessLocation=JSON.parse(geojsonfile);
+    /*
+  var businessLocation={
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "businessId":"adfa]239r90a9df",
+          "businessName": "Checkers Rally's",
+          "businessAddress": "\"7210 S Durango Dr\\nSouthwest\\nLas Vegas, NV 89113\"",
+          "businessCategories": "[\"Burgers\",\"Fast Food\",\"Sandwiches\",\"Restaurants\"]",
+          "dayInWeekCount":[[0,9],[1,3],[2,100],[3,5],[4,7],[5,3],[6,0]],
+          "checkInCountTimeWindow":"6",
+          "timeWindow":"17-3"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-115.279,36.0572]
+        }
+      },{
+        "type": "Feature",
+        "properties": {
+          "businessId":"adsafadffa]239r90a9df",
+          "businessName": "Red Rice",
+          "businessAddress": "\"9400 S  Eastern Ave\\nSte 106A\\nSoutheast\\nLas Vegas, NV 89123\"",
+          "businessCategories": "[\"Food\",\"Ethnic Food\",\"Specialty Food\"]",
+          "dayInWeekCount":[[0,900],[1,3000],[2,100],[3,5000],[4,700],[5,30],[6,1000]],
+          "checkInCountTimeWindow":"6",
+          "timeWindow":"17-3"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-115.118,36.0184]
+        }
+      }
+    ]
+  };
+*/
 
     //console.log(geojsonfile);
     busineslayer = L.geoJson(businessLocation, {
@@ -69,14 +165,7 @@ function showYelpDataGeoJSONOverlay(geojsonfile, stateTextContent) {
         onEachFeature: onEachFeature,
 
         pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, {
-                radius: 8,
-            fillColor: "#FF00E1",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.8
-            });
+            return L.circleMarker(latlng, defaultStyle);
         }
     }).addTo(map);
 }
