@@ -1,7 +1,7 @@
 package com.yelpdatasetchallenge.dataprocessing;
 
 /**
- * @author feiyu
+ * @author Fei Yu (@faustineinsun)
  */
 
 import java.io.BufferedReader;
@@ -58,6 +58,15 @@ public class DataStoreMySQLByPropertiesBatchSQL extends DataStoreMySQL implement
 
     for (String category : categoryList) {
       // System.out.println("&&&&&&&& "+category);
+
+      /*
+       * Change
+       * Used, Vintage & Consignment -to-> Used- Vintage & Consignment
+       * Books, Mags, Music & Video  -to-> Books- Mags, Music & Video
+       * Beer, Wine & Spirits        -to-> Beer- Wine & Spirits
+       * for creating a better category label of machine learning data set
+       */
+      category = category.replace(",", "-");
 
       preparedStatement.setString(1, category);
 

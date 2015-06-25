@@ -1,8 +1,14 @@
 package com.yelpdatasetchallenge.dataprocessing;
 
+/**
+ * @author Fei Yu (@faustineinsun)
+ * accumulate check-in count by day in week for each business
+ */
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -42,19 +48,53 @@ public class DataStoreMySQLCheckinArrayBatchSQL extends DataStoreMySQL implement
       countByDayInWeekAry[dayInWeek] += valueCount.asInt();
     }
 
+    /*
+     * @@@ what if multiple days have the same count and it happens to be the maxCount? 
+     * Solution: in order to increase the accuracy, this business record should be removed from the training data set, 
+     *    To exclude those kind of records, 
+     *      we can use a hashmap to record the mapping between the count and how much times this count occurs in the array
+     */
+    int maxCount = -1; 
+    int maxCountIdx = -1;
+    HashMap<Integer, Integer> countHappenTimesMap = new HashMap<Integer, Integer>();
     String chartDataDayCount = "[";
     for (int i=0; i<7; i++) {
+      int countByDayInWeek = countByDayInWeekAry[i];
+
+      // generate [dayInWeek, count], e.g. [5,26] means there are totally 26 check-in count on Friday of this business
       int[] dayCount = new int[2];
       dayCount[0] = i;
-      dayCount[1] = countByDayInWeekAry[i];
+      dayCount[1] = countByDayInWeek;
       chartDataDayCount += "["+dayCount[0]+","+dayCount[1]+"]"+(i!=6?",":"");
+
+      // map the count with how much times this count occurs in the array 
+      // e.g. in array [[0,50],[1,23],[2,50],[3,23],[4,23],[5,50],[6,7]]
+      // countHappenTimesMap is looks like <50,3>, <23,3>, <7,1>
+      int countHappenTimes = 1;
+      if (countHappenTimesMap.containsKey(countByDayInWeek)) {
+        countHappenTimes = countHappenTimesMap.get(countByDayInWeek)+1;
+      } 
+      countHappenTimesMap.put(countByDayInWeek, countHappenTimes);
+
+      // find the maxCount and maxCountIdx
+      if (countByDayInWeekAry[i] >= maxCount) {
+        maxCount = countByDayInWeekAry[i];
+        maxCountIdx = i;
+      }
     }
     chartDataDayCount +="]";
+
+    // check if there are multiple days have the maxCount
+    if (countHappenTimesMap.get(maxCount) != 1) {
+      // mark each business as -1 if it's maxCount happens in multiple days in a week
+      maxCountIdx = -1; 
+    }
 
     //System.out.println(chartDataDayCount);
 
     preparedStatement.setString(1, checkInObj.get("business_id").asText());
     preparedStatement.setString(2, chartDataDayCount);
+    preparedStatement.setString(3, String.valueOf(maxCountIdx));
     preparedStatement.addBatch();
 
     if ((numLines+1) % 2000 == 0) {
@@ -69,7 +109,7 @@ public class DataStoreMySQLCheckinArrayBatchSQL extends DataStoreMySQL implement
     ObjectMapper mapper = new ObjectMapper();
 
     preparedStatement = connect
-        .prepareStatement("INSERT IGNORE INTO Checkin(BusinessId, CheckinTimeWindowArray) VALUES(?,?);");
+        .prepareStatement("INSERT IGNORE INTO Checkin(BusinessId, CheckinTimeWindowArray, MaxCheckinCountDayInWeek) VALUES(?,?,?);");
 
     try {
       String line = br.readLine();

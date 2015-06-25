@@ -1,4 +1,7 @@
 package com.yelpdatasetchallenge.dataprocessing;
+/**
+ * @author Fei Yu (@faustineinsun)
+ */
 
 import java.io.File;
 import java.sql.SQLException;
@@ -15,7 +18,7 @@ import driven.com.fasterxml.jackson.databind.ObjectMapper;
 import driven.com.fasterxml.jackson.databind.ObjectWriter;
 
 /**
- * @author feiyu
+ * @author Fei Yu (@faustineinsun)
  * Example Code of GeoJSON
 {
     "type": "FeatureCollection",
@@ -86,7 +89,6 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
     //System.out.println("------"+preparedStatement.toString());
 
     resultSet = preparedStatement.executeQuery();
-
   }
 
   public void generateGeoJSON(String State, String Hour, String Week) throws Exception {
@@ -213,15 +215,6 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
     String logFilePath = "src/main/resources/yelp-dataset/log_mysql_properties_yelp_academic_dataset.txt";
     String businessFilePath = "src/main/resources/yelp-dataset/yelp_academic_dataset_business.json";
     String checkinFilePath = "src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json";
-
-    // save data to MySQL
-    DataStoreMySQLByPropertiesBatchSQL dsMysqlPropBatch = new DataStoreMySQLByPropertiesBatchSQL(
-      logFilePath, businessFilePath, checkinFilePath);
-
-    boolean saveData2DB = false;  //@@@
-    if (saveData2DB) {
-      dsMysqlPropBatch.run();
-    }
 
     // Query MySQL and generate GeoJSON
     QueryMySQLGenerateGeoJSONByProperties gnrtGeoJSON = new QueryMySQLGenerateGeoJSONByProperties(

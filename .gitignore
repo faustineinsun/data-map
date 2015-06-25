@@ -17,3 +17,6 @@
 *yelp-dataset/
 *yelpgeojson/
 *database.properties
+*.Rproj.user
+*demodata/
+*.pydevproject
