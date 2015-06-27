@@ -1,7 +1,7 @@
 package com.yelpdatasetchallenge.objects;
 
 /**
- * @author feiyu
+ * @author Fei Yu (@faustineinsun)
  */
 
 public class GeoJSONBusinessFeatureProperties {
@@ -10,6 +10,8 @@ public class GeoJSONBusinessFeatureProperties {
   private String businessAddress;
   private String businessCategories;
   private String dayInWeekCount;
+  private String dayInWeekCountPredictedProb;
+  private String maxCheckinCountDayInWeek;
   private String checkInCountTimeWindow; 
   private String timeWindow;
 
@@ -53,6 +55,22 @@ public class GeoJSONBusinessFeatureProperties {
     return this.dayInWeekCount; 
   }
 
+  public void setDayInWeekCountPredictedProb(String dayInWeekCountPredictedProb) {
+    this.dayInWeekCountPredictedProb = dayInWeekCountPredictedProb;
+  }
+
+  public String getDayInWeekCountPredictedProb() {
+    return this.dayInWeekCountPredictedProb; 
+  }
+
+  public void setMaxCheckinCountDayInWeek(String maxCheckinCountDayInWeek) {
+    this.maxCheckinCountDayInWeek = maxCheckinCountDayInWeek;
+  }
+
+  public String getMaxCheckinCountDayInWeek() {
+    return this.maxCheckinCountDayInWeek; 
+  }
+
   public void setCheckInCountTimeWindow(String checkInCountTimeWindow) {
     this.checkInCountTimeWindow = checkInCountTimeWindow;
   }
@@ -76,6 +94,8 @@ public class GeoJSONBusinessFeatureProperties {
         + ", businessAddress: " + businessAddress 
         + ", businessCategories: " + businessCategories 
         + ", dayInWeekCount: " + dayInWeekCount 
+        + ", dayInWeekCountPredictedProb: " + dayInWeekCountPredictedProb 
+        + ", maxCheckinCountDayInWeek: " + maxCheckinCountDayInWeek 
         + ", checkInCountTimeWindow: " + checkInCountTimeWindow 
         + ", timeWindow: " + timeWindow 
         + "}";

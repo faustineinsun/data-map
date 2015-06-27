@@ -38,6 +38,10 @@ var highlightStyle = {
   fillOpacity: 0.8
 };
 
+var isWithoutML = false;
+var isXGBoost = false;
+var isNeuralNetworks = false;
+
 var onEachFeature = function(feature, layer) {
   // mouseover and mouseout
   (function(layer, properties) {
@@ -65,10 +69,24 @@ var onEachFeature = function(feature, layer) {
         css: {fontSize: "16px", marginBottom: "3px", color: "SlateBlue"}
       }).appendTo(popup);
 
-      $("#showDayInWeekCount").text(feature.properties.businessName);
-      var data = feature.properties.dayInWeekCount;
+      $("#showDayInWeekCountName").text("Name: "+feature.properties.businessName);
+      $("#showDayInWeekCountCategory").text("Category: "+ feature.properties.businessCategories);
 
-      showDayInWeekCountChart(data);
+      //console.log("Status: "+isWithoutML+" "+isXGBoost+" "+isNeuralNetworks);
+      var data;
+      if (isWithoutML) {
+        data = feature.properties.dayInWeekCount;
+        showDayInWeekCountChartWithoutML(data);
+      } else if (isXGBoost) {
+        data = feature.properties.dayInWeekCountPredictedProb;
+        showDayInWeekCountChartXGBoost(data);
+      } else if (isNeuralNetworks) {
+        data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
+        showDayInWeekCountNeuralNetworks(data);
+      } else {
+        data = feature.properties.dayInWeekCount;
+        showDayInWeekCountChartWithoutML(data);
+      }
 
       popup.appendTo("#map");
     });
@@ -134,6 +152,8 @@ function showYelpDataGeoJSONOverlay(geojsonfile, stateTextContent) {
           "businessAddress": "\"7210 S Durango Dr\\nSouthwest\\nLas Vegas, NV 89113\"",
           "businessCategories": "[\"Burgers\",\"Fast Food\",\"Sandwiches\",\"Restaurants\"]",
           "dayInWeekCount":[[0,9],[1,3],[2,100],[3,5],[4,7],[5,3],[6,0]],
+          "dayInWeekCountPredictedProb":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
+          "MaxCheckinCountDayInWeek":"2",
           "checkInCountTimeWindow":"6",
           "timeWindow":"17-3"
         },
@@ -148,7 +168,9 @@ function showYelpDataGeoJSONOverlay(geojsonfile, stateTextContent) {
           "businessName": "Red Rice",
           "businessAddress": "\"9400 S  Eastern Ave\\nSte 106A\\nSoutheast\\nLas Vegas, NV 89123\"",
           "businessCategories": "[\"Food\",\"Ethnic Food\",\"Specialty Food\"]",
-          "dayInWeekCount":[[0,900],[1,3000],[2,100],[3,5000],[4,700],[5,30],[6,1000]],
+          "dayInWeekCount":[[0,900],[1,3000],[2,100],[3,5000],[4,700],[5,30],[6,5000]],
+          "dayInWeekCountPredictedProb":[[0,0.03828],[1,0.05920],[2,0.04781],[3,0.08197],[4,0.29545],[5,0.40551],[6,0.07179]],
+          "MaxCheckinCountDayInWeek":"-1",
           "checkInCountTimeWindow":"6",
           "timeWindow":"17-3"
         },

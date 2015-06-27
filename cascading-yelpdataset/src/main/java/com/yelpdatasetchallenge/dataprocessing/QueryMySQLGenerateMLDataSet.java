@@ -17,9 +17,10 @@ import driven.com.fasterxml.jackson.core.JsonParser;
 import driven.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class QueryMySQLGenerateMLDataSet extends DataStoreMySQL {
-  private PrintWriter pWriterTrain = new PrintWriter("src/main/resources/yelp-dataset/business_categories_maxCount_train.csv", "UTF-8");
-  private PrintWriter pWriterTest = new PrintWriter("src/main/resources/yelp-dataset/business_categories_maxCount_test.csv", "UTF-8");
-  private PrintWriter pWriterOthers = new PrintWriter("src/main/resources/yelp-dataset/business_categories_maxCount_others.csv", "UTF-8"); // business that doesn't provide category information
+  private PrintWriter pWriterTrain = new PrintWriter("src/main/resources/ml/dataset/yelp-dataset/business_categories_maxCount_train.csv", "UTF-8");
+  private PrintWriter pWriterTest = new PrintWriter("src/main/resources/ml/dataset/yelp-dataset/business_categories_maxCount_test.csv", "UTF-8");
+  private PrintWriter pWriterOthers = new PrintWriter("src/main/resources/ml/dataset/yelp-dataset/business_categories_maxCount_others.csv", "UTF-8"); // business that doesn't provide category information
+  private PrintWriter pWriterAll = new PrintWriter("src/main/resources/ml/dataset/yelp-dataset/business_categories_maxCount_all.csv", "UTF-8"); // business that doesn't provide category information
   private HashMap<String, Integer> categoryIdxMap = new HashMap<String, Integer>();
   private int nCategories;
 
@@ -46,6 +47,7 @@ public class QueryMySQLGenerateMLDataSet extends DataStoreMySQL {
 
     nCategories = categoryIdxMap.size();
     //System.out.println("size: "+nCategories);
+    pWriterAll.println(titles+",MaxCheckinDayInWeek");
     pWriterTrain.println(titles+",MaxCheckinDayInWeek");
     pWriterTest.println(titles);
     pWriterOthers.println(titles);
@@ -98,9 +100,11 @@ public class QueryMySQLGenerateMLDataSet extends DataStoreMySQL {
           // maxCheckinCountDayInWeek.equals("null") means when a business hasn't had check-in information in the history
           // maxCheckinCountDayInWeek.equals("-1") means when a business happens to have multiple days with the same maxCount (max check-in count in history)
           pWriterTest.println(businessRecordStr); 
+          pWriterAll.println(businessRecordStr+",-1");
         } else {
           businessRecordStr +=","+String.valueOf(maxCheckinCountDayInWeek);
           pWriterTrain.println(businessRecordStr); 
+          pWriterAll.println(businessRecordStr);
         }
       }
     }
@@ -115,6 +119,7 @@ public class QueryMySQLGenerateMLDataSet extends DataStoreMySQL {
     pWriterTrain.close();
     pWriterTest.close();
     pWriterOthers.close();
+    pWriterAll.close();
   }
 
   @Override

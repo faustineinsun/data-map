@@ -4,19 +4,49 @@ chartGraphStyle {
   top: 0px;
 }
 
-.axis path,
-.axis line {
+.axisWithoutML path,
+.axisWithoutML line {
   fill: none;
   stroke: LightSeaGreen;
   shape-rendering: crispEdges;
 }
 
-.x.axis {
+.x.axisWithoutML {
   fill: LightSeaGreen;
 }
 
-.y.axis {
+.y.axisWithoutML {
   fill: LightSeaGreen;
+}
+
+.axisXGBoost path,
+.axisXGBoost line {
+  fill: none;
+  stroke: LightSeaGreen;
+  shape-rendering: crispEdges;
+}
+
+.x.axisXGBoost {
+  fill: SandyBrown;
+}
+
+.y.axisXGBoost {
+  fill: SandyBrown;
+}
+
+.axisNeuralNetworks path,
+.axisNeuralNetworks line {
+  fill: none;
+  stroke: LightSeaGreen;
+  shape-rendering: crispEdges;
+}
+
+.x.axisNeuralNetworks {
+  fill: LightCoral;
+}
+
+.y.axisNeuralNetworks {
+  fill: LightCoral;
 }
 
 .line {

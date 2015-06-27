@@ -31,6 +31,8 @@ import driven.com.fasterxml.jackson.databind.ObjectWriter;
           "businessAddress": "\"7210 S Durango Dr\\nSouthwest\\nLas Vegas, NV 89113\"",
           "businessCategories": "[\"Burgers\",\"Fast Food\",\"Sandwiches\",\"Restaurants\"]",
           "dayInWeekCount":[[0,9],[1,3],[2,100],[3,5],[4,7],[5,3],[6,0]],
+          "dayInWeekCountPredictedProb":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
+          "MaxCheckinCountDayInWeek":"2",
           "checkInCountTimeWindow":"6",
           "timeWindow":"17-3"
         },
@@ -45,7 +47,9 @@ import driven.com.fasterxml.jackson.databind.ObjectWriter;
           "businessName": "Red Rice",
           "businessAddress": "\"9400 S  Eastern Ave\\nSte 106A\\nSoutheast\\nLas Vegas, NV 89123\"",
           "businessCategories": "[\"Food\",\"Ethnic Food\",\"Specialty Food\"]",
-          "dayInWeekCount":[[0,900],[1,3000],[2,100],[3,5000],[4,700],[5,30],[6,1000]],
+          "dayInWeekCount":[[0,900],[1,3000],[2,100],[3,5000],[4,700],[5,30],[6,5000]],
+          "dayInWeekCountPredictedProb":[[0,0.03828],[1,0.05920],[2,0.04781],[3,0.08197],[4,0.29545],[5,0.40551],[6,0.07179]],
+          "MaxCheckinCountDayInWeek":"-1",
           "checkInCountTimeWindow":"6",
           "timeWindow":"17-3"
         },
@@ -76,11 +80,13 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
 
   private void queryDB(String State, String Hour, String Week) throws SQLException {
     preparedStatement = connect.prepareStatement(
-      "SELECT Businesses.*, Business_checkin.`HourWeekTimeWindow`, Business_checkin.`Count`, Checkin.`CheckinTimeWindowArray`, Business_checkin.`Hour`,  Business_checkin.`Week` " 
-          +"FROM  Businesses INNER JOIN Business_checkin "
-          +"ON Businesses.`BusinessId` = Business_checkin.`BusinessId` "
-          +"INNER JOIN Checkin "
+      "SELECT Businesses.*, Checkin.`CheckinTimeWindowArray`, Checkin.`MaxCheckinCountDayInWeek`, CheckinPredicted.`CheckinTimeWindowArrayPredicted`, Business_checkin.`HourWeekTimeWindow`, Business_checkin.`Hour`, Business_checkin.`Week`, Business_checkin.`Count` " 
+          +"FROM  Businesses LEFT JOIN Checkin "
           +"ON Businesses.`BusinessId` = Checkin.`BusinessId` "
+          +"LEFT JOIN CheckinPredicted "
+          +"ON Businesses.`BusinessId` = CheckinPredicted.`BusinessId` "
+          +"LEFT JOIN Business_checkin "
+          +"ON Businesses.`BusinessId` = Business_checkin.`BusinessId` "
           +"WHERE Businesses.`State` = ? "
           +"AND Business_checkin.`Hour` = ? AND Business_checkin.`Week` = ?");
     preparedStatement.setString(1, State);
@@ -109,6 +115,8 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
       geoJsonFeatureProp.setBusinessAddress(resultSet.getString("FullAddress"));
       geoJsonFeatureProp.setBusinessCategories(resultSet.getString("Category"));
       geoJsonFeatureProp.setDayInWeekCount(resultSet.getString("CheckinTimeWindowArray"));
+      geoJsonFeatureProp.setDayInWeekCountPredictedProb(resultSet.getString("CheckinTimeWindowArrayPredicted"));
+      geoJsonFeatureProp.setMaxCheckinCountDayInWeek(resultSet.getString("MaxCheckinCountDayInWeek"));
       geoJsonFeatureProp.setCheckInCountTimeWindow(resultSet.getString("Count"));
       geoJsonFeatureProp.setTimeWindow(resultSet.getString("Hour")+":"+resultSet.getString("Week"));
       //System.out.println("geoJsonFeatureProp: "+geoJsonFeatureProp.toString());

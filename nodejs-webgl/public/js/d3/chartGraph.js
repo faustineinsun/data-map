@@ -13,9 +13,9 @@ data.push([i, currentValue]);
 currentValue = currentValue + random();
 } */
 
-var data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
+//var data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
 
-var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLabel) {
+var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLabel, axisColorTag) {
 
   var svg = d3.select("#chartGraphJS").append("svg")
   .attr("width", containerWidth)
@@ -63,13 +63,27 @@ var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLab
 
   var g = svg.append('g').attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
+  var xAxisColor;
+  var yAxisColor;
+
+  if (axisColorTag=="withoutML") {
+    xAxisColor='x axisWithoutML';
+    yAxisColor='x axisWithoutML';
+  } else if (axisColorTag=="XGBoost") {
+    xAxisColor='x axisXGBoost';
+    yAxisColor='y axisXGBoost';
+  } else if (axisColorTag=="NeuralNetworks") {
+    xAxisColor='x axisNeuralNetworks';
+    yAxisColor='y axisNeuralNetworks';
+  }
+
   g.append('path')
   .datum(data)
   .attr('class', 'area')
   .attr('d', area);
 
   g.append('g')
-  .attr('class', 'x axis')
+  .attr('class', xAxisColor)
   .attr('transform', 'translate(0, ' + height + ')')
   .call(xAxis)
   .append('text')
@@ -79,7 +93,7 @@ var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLab
   .text(xLabel);
 
   g.append('g')
-  .attr('class', 'y axis')
+  .attr('class', yAxisColor)
   .call(yAxis)
   .append('text')
   .attr('transform', 'rotate(-90)')
@@ -162,9 +176,22 @@ var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLab
   });
 };
 
-function showDayInWeekCountChart(data) {
+function showDayInWeekCountChartWithoutML(data) {
   //var data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
   data = JSON.parse(data);
   $("#chartGraphJS").empty();
-  drawLineGraph(380, 400, data, "Check-in Count", "Day in Week");
+  drawLineGraph(380, 400, data, "History Check-in Count", "Day in Week", "withoutML");
+}
+
+function showDayInWeekCountChartXGBoost(data) {
+  data = JSON.parse(data);
+  $("#chartGraphJS").empty();
+  drawLineGraph(380, 400, data, "XGBoost Prob", "Day in Week", "XGBoost");
+}
+
+function showDayInWeekCountNeuralNetworks(data) {
+  data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
+  //data = JSON.parse(data);
+  $("#chartGraphJS").empty();
+  drawLineGraph(380, 400, data, "Neural Networks Prob", "Day in Week", "NeuralNetworks");
 }

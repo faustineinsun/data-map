@@ -14,7 +14,7 @@ a {
     text-decoration: none;
 }
 a:hover {
-    color: MediumAquaMarine;
+    color: SeaShell;
 }
 canvas {
     pointer-events:none;
@@ -30,7 +30,7 @@ bottomtext {
 
 .panel {
 	position: absolute;
-	width: 28.8%;
+	width: 415px;
 	height: 100%;
 	right: 0px;
 	top: 0px;
@@ -112,11 +112,18 @@ bottomtext {
 	text-decoration:none;
 }
 
-.showDayInWeekCountStyle {
-    right: 100px;
-    top: 25px;
+.showDayInWeekCountStyleName {
+    right: 0%;
+    top: 1%;
+    color: LightSeaGreen;
+    position: relative;
+}
+
+.showDayInWeekCountStyleCategory {
+    right: 2%;
+    top: 3%;
     color: SlateBlue;
-    position: absolute;
+    position: relative;
 }
 
 .showDataOnMapButton:hover {
@@ -129,8 +136,8 @@ bottomtext {
 }
 
 .showWholeMapButton {
-  top: 30px;
-  right: 30%;
+  top: 50%;
+  right: 425px;
   position: fixed;
 	-moz-box-shadow: 1px -2px 5px 3px LightSeaGreen;
 	-webkit-box-shadow: 1px -2px 5px 3px LightSeaGreen;
@@ -141,15 +148,117 @@ bottomtext {
 	border-radius:11px;
 	display:inline-block;
 	cursor:pointer;
-	color:#ffffff;
+	color:Turquoise;
 	font-family:Trebuchet MS;
 	font-size:15px;
 	padding:5px 7px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px LightSeaGreen;
 }
 .showWholeMapButton:hover {
 	background-color:transparent;
 }
 .showWholeMapButton:active {
+}
+
+.backToStateButton {
+  top: 55%;
+  right: 425px;
+  position: fixed;
+	-moz-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	-webkit-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	background-color:transparent;
+	-moz-border-radius:11px;
+	-webkit-border-radius:11px;
+	border-radius:11px;
+	display:inline-block;
+	cursor:pointer;
+	color:Turquoise;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	padding:5px 7px;
+	text-decoration:none;
+}
+.backToStateButton:hover {
+	background-color:transparent;
+}
+.backToStateButton:active {
+}
+
+
+.showXGBoostProbButton {
+  top: 2%;
+  right: 425px;
+  position: fixed;
+	-moz-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	-webkit-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	background-color:transparent;
+	-moz-border-radius:11px;
+	-webkit-border-radius:11px;
+	border-radius:11px;
+	display:inline-block;
+	cursor:pointer;
+	color:SandyBrown;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	padding:5px 7px;
+	text-decoration:none;
+}
+.showXGBoostProbButton:hover {
+	background-color:transparent;
+}
+.showXGBoostProbButton:active {
+}
+
+
+.showNeuralNetworksProbButton {
+  top: 7%;
+  right: 425px;
+  position: fixed;
+	-moz-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	-webkit-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	background-color:transparent;
+	-moz-border-radius:11px;
+	-webkit-border-radius:11px;
+	border-radius:11px;
+	display:inline-block;
+	cursor:pointer;
+	color:LightCoral;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	padding:5px 7px;
+	text-decoration:none;
+}
+.showNeuralNetworksProbButton:hover {
+	background-color:transparent;
+}
+.showNeuralNetworksProbButton:active {
+}
+
+
+.withoutMLButton {
+  top: 12%;
+  right: 425px;
+  position: fixed;
+	-moz-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	-webkit-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	background-color:transparent;
+	-moz-border-radius:11px;
+	-webkit-border-radius:11px;
+	border-radius:11px;
+	display:inline-block;
+	cursor:pointer;
+	color:Turquoise;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	padding:5px 7px;
+	text-decoration:none;
+}
+.withoutMLButton:hover {
+	background-color:transparent;
+}
+.withoutMLButton:active {
 }

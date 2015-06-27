@@ -25,3 +25,13 @@ INNER JOIN Checkin
 ON Businesses.`BusinessId` = Checkin.`BusinessId`
 WHERE Businesses.`State` = 'NV'
 AND Business_checkin.`Hour` = '19' AND Business_checkin.`Week` = '5';
+
+SELECT Businesses.*, Checkin.`CheckinTimeWindowArray`, Checkin.`MaxCheckinCountDayInWeek`, CheckinPredicted.`CheckinTimeWindowArrayPredicted`, Business_checkin.`HourWeekTimeWindow`, Business_checkin.`Count`
+FROM  Businesses LEFT JOIN Checkin
+ON Businesses.`BusinessId` = Checkin.`BusinessId`
+LEFT JOIN CheckinPredicted
+ON Businesses.`BusinessId` = CheckinPredicted.`BusinessId`
+LEFT JOIN Business_checkin
+ON Businesses.`BusinessId` = Business_checkin.`BusinessId`
+WHERE Businesses.`State` = 'NV'
+AND Business_checkin.`Hour` = '19' AND Business_checkin.`Week` = '5';

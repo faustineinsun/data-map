@@ -189,18 +189,49 @@ setDonutWheel = function (isfix) {
 };
 </script>
 
-<div id="showDayInWeekCount" class="showDayInWeekCountStyle"></div>
+<div id="showDayInWeekCountName" class="showDayInWeekCountStyleName"></div>
+<div id="showDayInWeekCountCategory" class="showDayInWeekCountStyleCategory"></div>
 
 </div>
 
 <!--End of panel-->
 
-<a href="#" id = "clickShowWholeMapButton" class="showWholeMapButton">Show Whole Map</a>
+<a href="#" id="clickShowWholeMapButton" class="showWholeMapButton">Show Whole Map</a>
+<a href="#" id="backToState" class="backToStateButton">Back</a>
 <script type="text/javascript">
+var bounds, center, zoom;
 $("#clickShowWholeMapButton").on("click", function() {
+  bounds = map.getBounds();
+  center = L.latLngBounds(bounds).getCenter();
+  zoom = map.getBoundsZoom(bounds, 0);
   map.setView([40.78,-14.06], 3);
 });
+$("#backToState").on("click", function() {
+  map.setView(center, zoom);
+});
 </script>
+
+<a href="#" id = "withoutML" class="withoutMLButton">WithoutML &#9658;</a>
+<a href="#" id = "XGBoostProbChart" class="showXGBoostProbButton">XGBoost &#9658;</a>
+<a href="#" id = "NeuralNetworksProbChart" class="showNeuralNetworksProbButton">Neural Networks &#9658;</a>
+<script type="text/javascript">
+$("#withoutML").on("click", function() {
+  isWithoutML = true;
+  isXGBoost = false;
+  isNeuralNetworks = false;
+});
+$("#XGBoostProbChart").on("click", function() {
+  isWithoutML = false;
+  isXGBoost = true;
+  isNeuralNetworks = false;
+});
+$("#NeuralNetworksProbChart").on("click", function() {
+  isWithoutML = false;
+  isXGBoost = false;
+  isNeuralNetworks = true;
+});
+</script>
+
 
 </body>
 </html>
