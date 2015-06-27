@@ -42,6 +42,8 @@ var isWithoutML = false;
 var isXGBoost = false;
 var isNeuralNetworks = false;
 
+var curDataWithoutML, curDataXGBoost, curDataNeuralNetworks;
+
 var onEachFeature = function(feature, layer) {
   // mouseover and mouseout
   (function(layer, properties) {
@@ -72,6 +74,9 @@ var onEachFeature = function(feature, layer) {
       $("#showDayInWeekCountName").text("Name: "+feature.properties.businessName);
       $("#showDayInWeekCountCategory").text("Category: "+ feature.properties.businessCategories);
 
+      curDataWithoutML = feature.properties.dayInWeekCount;
+      curDataXGBoost = feature.properties.dayInWeekCountPredictedProb;
+      curDataNeuralNetworks = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
       //console.log("Status: "+isWithoutML+" "+isXGBoost+" "+isNeuralNetworks);
       var data;
       if (isWithoutML) {

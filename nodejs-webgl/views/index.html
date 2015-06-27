@@ -211,24 +211,39 @@ $("#backToState").on("click", function() {
 });
 </script>
 
-<a href="#" id = "withoutML" class="withoutMLButton">WithoutML &#9658;</a>
 <a href="#" id = "XGBoostProbChart" class="showXGBoostProbButton">XGBoost &#9658;</a>
 <a href="#" id = "NeuralNetworksProbChart" class="showNeuralNetworksProbButton">Neural Networks &#9658;</a>
+<a href="#" id = "withoutML" class="withoutMLButton">WithoutML &#9658;</a>
 <script type="text/javascript">
-$("#withoutML").on("click", function() {
-  isWithoutML = true;
-  isXGBoost = false;
-  isNeuralNetworks = false;
-});
 $("#XGBoostProbChart").on("click", function() {
   isWithoutML = false;
   isXGBoost = true;
   isNeuralNetworks = false;
+  if (typeof curDataXGBoost === "undefined") {
+    $("#showDayInWeekCountName").html("<div style='color:SandyBrown'>Please place your mouse over the points on the map</div>");
+  } else {
+    showDayInWeekCountChartXGBoost(curDataXGBoost)
+  }
 });
 $("#NeuralNetworksProbChart").on("click", function() {
   isWithoutML = false;
   isXGBoost = false;
   isNeuralNetworks = true;
+  if (typeof curDataNeuralNetworks === "undefined") {
+    $("#showDayInWeekCountName").html("<div style='color:LightCoral'>Please place your mouse over the points on the map</div>");
+  } else {
+    showDayInWeekCountNeuralNetworks(curDataNeuralNetworks)
+  }
+});
+$("#withoutML").on("click", function() {
+  isWithoutML = true;
+  isXGBoost = false;
+  isNeuralNetworks = false;
+  if (typeof curDataWithoutML === "undefined") {
+    $("#showDayInWeekCountName").text("Please place your mouse over the points on the map");
+  } else {
+    showDayInWeekCountChartWithoutML(curDataWithoutML)
+  }
 });
 </script>
 
