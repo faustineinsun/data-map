@@ -61,7 +61,9 @@ dependencies {
   compile( group: 'redis.clients', name: 'jedis', version: '2.7.2')
   compile( group: 'mysql', name: 'mysql-connector-java', version: '5.1.35')
   compile( group: 'org.mybatis', name: 'mybatis', version: '3.3.0')
-
+  compile( group: 'cascading', name: 'pattern-pmml', version: '1.0.0-wip-51' )
+  compile( group: 'cascading', name: 'pattern-core', version: '1.0.0-wip-51' )
+  
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: hadoopVersion )
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client', version: hadoopVersion )
   providedCompile( group: 'org.apache.hadoop', name: 'hadoop-common', version: hadoopVersion )

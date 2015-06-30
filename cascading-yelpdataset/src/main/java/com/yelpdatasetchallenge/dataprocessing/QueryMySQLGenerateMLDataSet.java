@@ -38,7 +38,7 @@ public class QueryMySQLGenerateMLDataSet extends DataStoreMySQL {
     while (resultSet.next()) {
       String category = resultSet.getString("Category");
 
-      titles += ","+category;
+      titles += ","+category.replaceAll("[^a-zA-Z0-9]+","");
       categoryIdxMap.put(category, idx);
 
       idx++;
@@ -84,7 +84,7 @@ public class QueryMySQLGenerateMLDataSet extends DataStoreMySQL {
         for (String category : categoryList) {
           // System.out.println("&&&&&&&& category: "+category);
           // save category label index into categoryIdxSet
-          categoryIdxSet.add(categoryIdxMap.get(category));
+          categoryIdxSet.add(categoryIdxMap.get(category.replaceAll("[^a-zA-Z0-9]+","")));
         }
 
         String businessRecordStr = businessRecord;

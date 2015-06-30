@@ -11,7 +11,6 @@ rm(list = ls())
 
 ##### Preparation of the data
 # https://github.com/dmlc/xgboost/blob/master/demo/kaggle-otto/otto_train_pred.R
-# magrittr and data.table are here to make the code cleaner and much more rapid
 require(data.table)
 require(magrittr)
 require(xgboost)
@@ -26,26 +25,21 @@ allData <- fread(paste(dataDir, "business_categories_maxCount_all.csv", sep=""),
 
 testBusinessId = test$BusinessId
 allBusinessId = allData$BusinessId
-# Delete ID column in training dataset
-train[, BusinessId := NULL]
-#train = train[,-1]
-# Delete ID column in testing dataset
+
+# delete BusinessId column
+train[, BusinessId := NULL] #train = train[,-1]
 test[, BusinessId := NULL]
-#test = test[,-1]
 allData[, BusinessId := NULL]
 
-# Check the content of the last column
-#train[1:6, ncol(train), with  = F]
-# Save the name of the last column
+# get the last column for labeling records
 nameLastCol <- names(train)[ncol(train)]
 y <- train[, nameLastCol, with = F][[1]] %>% as.matrix
-# Display the first 5 levels
-#y[1:5]
 
-# Delete the last(target) column from training dataset
+# Delete the last column from training dataset
 train[, nameLastCol:=NULL, with = F]
 allData[, nameLastCol:=NULL, with = F]
 
+# get the matrices
 trainMatrix <- train[,lapply(.SD,as.numeric)] %>% as.matrix
 testMatrix <- test[,lapply(.SD,as.numeric)] %>% as.matrix
 allMatrix <- allData[,lapply(.SD,as.numeric)] %>% as.matrix
@@ -59,34 +53,35 @@ param <- list("objective" = "multi:softprob",
               "eta" = 0.6,
               "nthread" = 32)
 
-# Before the learning we will use the cross validation to evaluate the our error rate
-# Run Cross Valication
+# Before the learning, cross validation is used to evaluate the error rate
+# Find if the error rate is low (like train-mlogloss:0.421538 test-mlogloss:0.321538) on the test dataset
 cv.nround <- 10
 cv.nfold <- 10
 bst.cv = xgb.cv(param=param, data = trainMatrix, label = y, nfold = cv.nfold, nrounds = cv.nround)
-# As we can see the error rate is low on the test dataset (for a 5mn trained model). 
 
-# Finally, we are ready to train the real model!!!
-nround = 200 # build a model made of 50 trees
+# Now let's train the real model
+nround = 200 # build a model made of nround trees
 bst = xgboost(param=param, data = trainMatrix, label = y, nrounds=nround)
 
 ##### Model understanding
 
 ### Feature importance
 # Not all splits are equally important
-# the first tree will do the big work and the following trees will focus on the remaining, on the parts not correctly learned by the previous trees
+# the first tree will do the big work and 
+# the following trees will focus on the remaining, 
+# on the parts not correctly learned by the previous trees
 model <- xgb.dump(bst, with.stats = T)
 model[1:10]
-# Get the feature real names
+# Get the feature's real names
 names <- dimnames(trainMatrix)[[2]]
 # Compute feature importance matrix
 importance_matrix <- xgb.importance(names, model = bst)
-# Nice graph
+# get graph
 xgb.plot.importance(importance_matrix[1:10,])
 
 ### Tree graph
-# just displaying the first two trees here.
-xgb.plot.tree(feature_names = names, model = bst, n_first_tree = 2)
+# just displaying the first n_first_tree trees
+xgb.plot.tree(feature_names = names, model = bst, n_first_tree = 3)
 
 
 ##### predict testing data
