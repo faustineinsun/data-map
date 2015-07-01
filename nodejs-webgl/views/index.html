@@ -21,26 +21,30 @@
   <link rel="shortcut icon" href="img/favicon.png">
 
   <script type="text/javascript" src="js/third-party-lib/jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="js/third-party-lib/d3.min.js"></script>
 
   <link href="css/style.css" rel="stylesheet">
   <script type="text/javascript" src="js/scripts.js"></script>
   <script type="text/javascript" src="js/scalaJS/example-opt.js"></script>
-  <script type="text/javascript" src="js/fb/login.js"></script>
+  <!--script type="text/javascript" src="js/fb/login.js"></script-->
 
   <!-- WebGL -->
   <link href="css/third-party-lib/leaflet.css" rel="stylesheet">
+
+  <link href="css/webgl/overlaybox.css" rel="stylesheet">
+  <link href="css/webgl/webglmap.css" rel="stylesheet">
 
   <script type="text/javascript" src="js/third-party-lib/leaflet.js"></script>
   <script type="text/javascript" src="js/third-party-lib/leaflet-hash.js"></script>
   <script type="text/javascript" src="js/third-party-lib/tangram.min.js"></script>
   <script type="text/javascript" src="js/third-party-lib/three.min.js"></script>
 
-  <link href="css/webgl/overlaybox.css" rel="stylesheet">
-  <link href="css/webgl/webglmap.css" rel="stylesheet">
-
   <script type="text/javascript" src="js/webgl/clickinfobox.js"></script>
 
+  <!--d3 chart-->
+  <script type="text/javascript" src="js/third-party-lib/d3.min.js"></script>
+
+
+  <!--wheelnav-->
   <script type="text/javascript" src="js/third-party-lib/raphael.min.js"></script>
   <script type="text/javascript" src="js/third-party-lib/wheelnav.js"></script>
   <script type="text/javascript" src="js/third-party-lib/wheelnav.datetime.js"></script>
@@ -68,14 +72,15 @@ window.addEventListener("hashchange",function(){parent.postMessage(window.locati
 <bottomtext>
   <center>
     <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
-    <br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+    <br>This work is licensed under a <br><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
     <br><br>
   </center>
 </bottomtext>
 
 
 <!--panel-->
-<div class="floating-item-container">
+
+<!--div class="floating-item-container">
   <div class="button-container"> <a href="#" class="btn btn-float "> <i class="mdi-image-palette"></i> </a> </div>
   <div class="modal"> <a href="#" class="close"> <i class="mdi-navigation-close"></i> </a>
     <div class="modal-content">
@@ -86,7 +91,13 @@ window.addEventListener("hashchange",function(){parent.postMessage(window.locati
 
   </div>
 </div>
-</div>
+</div-->
+
+<div class="panel">
+
+<chartGraphStyle id="chartGraphJS"></chartGraphStyle>
+<link href="css/d3/chartGraph.css" rel="stylesheet">
+<script type="text/javascript" src="js/d3/chartGraph.js"></script>
 
 <div id="checkInInfoOnRedis" class="checkInInfoOnRedisStyle"></div>
 <div id="textSchema" class="textSchemaStyle"></div>
@@ -97,11 +108,18 @@ window.addEventListener("hashchange",function(){parent.postMessage(window.locati
 <div id="exampleStateHourWeekText" class="exampleStateHourWeekTextStyle"></div>
 <br>
 <a href="#" id="submitquerytoredis" class="showDataOnMapButton">Show Data on Map</a>
+
 <script type="text/javascript">
-$("#checkInInfoOnRedis").text("Please choose the state, week, and hour");
+var queryStr = "businessGeoJSON_EDH_8_Fri";
+$.post('/redis?q='+queryStr, function(geoJSONfile) {
+  showYelpDataGeoJSONOverlay(geoJSONfile, "EDH");
+});
+
+$("#checkInInfoOnRedis").html("&smashp; Please specify the state, week, and hour information by turning the wheel ");
 $("#textSchema").text("Week :: Hour  ::  State");
 $("#exampleStateHourWeek").text("Example:");
 $("#exampleStateHourWeekText").text("Fri :: 6 :: EDH");
+
 $("#submitquerytoredis").on("click", function() {
   var stateInfo = document.getElementById('currentStateInfoYDC'),
   stateTextContent = stateInfo.textContent; //htmlContent = node.innerHTML,
@@ -113,7 +131,7 @@ $("#submitquerytoredis").on("click", function() {
   weekTextContent = weekInfo.textContent;
 
   if (stateTextContent=="" || weekTextContent=="" || hourTextContent=="") {
-      $("#checkInInfoOnRedis").text("State, week, and hour info needed to be got by turning the wheel !!");
+      $("#checkInInfoOnRedis").html("&cross; Please specify all of the state, week, and hour information by turning the wheel ");
     } else {
       switch(stateTextContent) {
         case "BW": $("#exampleStateHourWeekText").text("Fri :: 10 :: BW"); break;
@@ -146,9 +164,9 @@ $("#submitquerytoredis").on("click", function() {
       $.post('/redis?q='+queryStr, function(geoJSONfile) {
         //console.log(geoJSONfile);
         if(geoJSONfile=="no") {
-          $("#checkInInfoOnRedis").text("No people check in at this time in this state !!");
+          $("#checkInInfoOnRedis").html("&smashp; No people check in at this time in this state !! <br> Try example as follows");
         } else {
-          $("#checkInInfoOnRedis").text("The check-in information is shown on the map");
+          $("#checkInInfoOnRedis").html("&check; The check-in information now is shown on the map ");
           showYelpDataGeoJSONOverlay(geoJSONfile, stateTextContent);
         }
       });
@@ -171,7 +189,79 @@ setDonutWheel = function (isfix) {
 };
 </script>
 
+<div id="showDayInWeekCountName" class="showDayInWeekCountStyleName"></div>
+<div id="showDayInWeekCountCategory" class="showDayInWeekCountStyleCategory"></div>
+
+</div>
+
 <!--End of panel-->
+
+<a href="#" id="clickShowWholeMapButton" class="showWholeMapButton">Show Whole Map</a>
+<a href="#" id="backToState" class="backToStateButton">Back</a>
+<script type="text/javascript">
+var bounds, center, zoom;
+$("#clickShowWholeMapButton").on("click", function() {
+  bounds = map.getBounds();
+  center = L.latLngBounds(bounds).getCenter();
+  zoom = map.getBoundsZoom(bounds, 0);
+  map.setView([40.78,-14.06], 3);
+});
+$("#backToState").on("click", function() {
+  map.setView(center, zoom);
+});
+</script>
+
+<a href="#" id = "XGBoostProbChart" class="showXGBoostProbButton">XGBoost &#9658;</a>
+<a href="#" id = "RandomForestProbChart" class="showRandomForestProbButton">Random Forest &#9658;</a>
+<a href="#" id = "H2ODeepLearningProbChart" class="showH2ODeepLearningProbButton">H2O Deep Learning &#9658;</a>
+<a href="#" id = "withoutML" class="withoutMLButton">WithoutML &#9658;</a>
+<script type="text/javascript">
+$("#XGBoostProbChart").on("click", function() {
+  isWithoutML = false;
+  isXGBoost = true;
+  isRandomForest = false;
+  isH2ODeepLearning = false;
+  if (typeof curDataXGBoost === "undefined") {
+    $("#showDayInWeekCountName").html("<div style='color:SandyBrown'>Please place your mouse over the points on the map</div>");
+  } else {
+    showDayInWeekCountChartXGBoost(curDataXGBoost)
+  }
+});
+$("#RandomForestProbChart").on("click", function() {
+  isWithoutML = false;
+  isXGBoost = false;
+  isRandomForest = true;
+  isH2ODeepLearning = false;
+  if (typeof curDataRandomForest === "undefined") {
+    $("#showDayInWeekCountName").html("<div style='color:LightCoral'>Please place your mouse over the points on the map</div>");
+  } else {
+    showDayInWeekCountRandomForest(curDataRandomForest)
+  }
+});
+$("#H2ODeepLearningProbChart").on("click", function() {
+  isWithoutML = false;
+  isXGBoost = false;
+  isRandomForest = false;
+  isH2ODeepLearning = true;
+  if (typeof curDataH2ODeepLearning === "undefined") {
+    $("#showDayInWeekCountName").html("<div style='color:MediumVioletRed'>Please place your mouse over the points on the map</div>");
+  } else {
+    showDayInWeekCountH2ODeepLearning(curDataH2ODeepLearning)
+  }
+});
+$("#withoutML").on("click", function() {
+  isWithoutML = true;
+  isXGBoost = false;
+  isRandomForest = false;
+  isH2ODeepLearning = false;
+  if (typeof curDataWithoutML === "undefined") {
+    $("#showDayInWeekCountName").text("Please place your mouse over the points on the map");
+  } else {
+    showDayInWeekCountChartWithoutML(curDataWithoutML)
+  }
+});
+</script>
+
 
 </body>
 </html>

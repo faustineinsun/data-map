@@ -9,8 +9,6 @@ $ foreman start web
 
 ## On remote machine
 
-* [AWS EC2](http://ec2-52-6-112-107.compute-1.amazonaws.com:5000/)
-
 ```
 $ scripts/1-install-tools.sh
 ```

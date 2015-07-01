@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Businesses, Categories, CheckinTimeWindow, Cities, Business_Category, Business_Checkin; 
+DROP TABLE IF EXISTS Businesses, Categories, Checkin, CheckinPredicted, CheckinTimeWindow, Cities, Business_Category, Business_Checkin; 
 
 CREATE TABLE IF NOT EXISTS Businesses(BusinessId VARCHAR(255) PRIMARY KEY, 
     Name TEXT, 
@@ -20,6 +20,15 @@ CREATE TABLE IF NOT EXISTS Cities(City VARCHAR(255) PRIMARY KEY,
 	State TINYTEXT) 
 	ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS Checkin(BusinessId VARCHAR(255) PRIMARY KEY, 
+    CheckinTimeWindowArray MEDIUMTEXT,
+    MaxCheckinCountDayInWeek VARCHAR(2))
+    ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS CheckinPredicted(BusinessId VARCHAR(255) PRIMARY KEY, 
+    CheckinTimeWindowArrayPredictedXGBoost MEDIUMTEXT,
+    CheckinTimeWindowArrayPredictedRandomForest MEDIUMTEXT,
+    CheckinTimeWindowArrayPredictedH2ODeepLearning MEDIUMTEXT)
+    ENGINE=InnoDB;
 CREATE TABLE IF NOT EXISTS CheckinTimeWindow(HourWeekTimeWindow VARCHAR(255) PRIMARY KEY) ENGINE=InnoDB;
 CREATE TABLE IF NOT EXISTS Business_Checkin(id INT NOT NULL AUTO_INCREMENT,
 	HourWeekTimeWindow VARCHAR(255),

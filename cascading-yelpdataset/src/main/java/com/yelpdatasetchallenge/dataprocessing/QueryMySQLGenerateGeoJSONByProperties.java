@@ -1,5 +1,9 @@
 package com.yelpdatasetchallenge.dataprocessing;
+/**
+ * @author Fei Yu (@faustineinsun)
+ */
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -14,40 +18,52 @@ import driven.com.fasterxml.jackson.databind.ObjectMapper;
 import driven.com.fasterxml.jackson.databind.ObjectWriter;
 
 /**
- * @author feiyu
+ * @author Fei Yu (@faustineinsun)
  * Example Code of GeoJSON
 {
     "type": "FeatureCollection",
     "features": [
-    {
+      {
         "type": "Feature",
         "properties": {
-            "businessName": "business name 1",
-            "businessCategories":"category 1, category 2",
-            "businessAddress":"address 1",
-            "checkInCountTimeWindow":"6",
-            "timeWindow":"17-3"
+          "businessId":"adfa]239r90a9df",
+          "businessName": "Checkers Rally's",
+          "businessAddress": "\"7210 S Durango Dr\\nSouthwest\\nLas Vegas, NV 89113\"",
+          "businessCategories": "[\"Burgers\",\"Fast Food\",\"Sandwiches\",\"Restaurants\"]",
+          "dayInWeekCount":[[0,9],[1,3],[2,100],[3,5],[4,7],[5,3],[6,0]],
+          "dayInWeekCountPredictedProbXGBoost":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,2.13550],[5,0.38106],[6,0.08028]],
+          "dayInWeekCountPredictedProbRandomForest":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
+          "dayInWeekCountPredictedProbH2ODeepLearning":[[0,0.03828],[1,0.05920],[2,1.04781],[3,0.08197],[4,0.29545],[5,0.40551],[6,0.07179]],
+          "MaxCheckinCountDayInWeek":"2",
+          "checkInCountTimeWindow":"6",
+          "timeWindow":"17-3"
         },
         "geometry": {
-            "type": "Point",
-            "coordinates": [-104.98999178409578, 39.74683938093909]
+          "type": "Point",
+          "coordinates": [-115.279,36.0572]
         }
-    },{
+      },{
         "type": "Feature",
         "properties": {
-            "businessName": "business name 2",
-            "businessCategories":"category 3, category 2",
-            "businessAddress":"address 2",
-            "checkInCountTimeWindow":"2",
-            "timeWindow":"15-4"
+          "businessId":"adsafadffa]239r90a9df",
+          "businessName": "Red Rice",
+          "businessAddress": "\"9400 S  Eastern Ave\\nSte 106A\\nSoutheast\\nLas Vegas, NV 89123\"",
+          "businessCategories": "[\"Food\",\"Ethnic Food\",\"Specialty Food\"]",
+          "dayInWeekCount":[[0,900],[1,3000],[2,100],[3,5000],[4,700],[5,30],[6,5000]],
+          "dayInWeekCountPredictedProbXGBoost":[[0,0.03828],[1,0.05920],[2,0.04781],[3,0.08197],[4,0.29545],[5,1.40551],[6,0.07179]],
+          "dayInWeekCountPredictedProbRandomForest":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
+          "dayInWeekCountPredictedProbH2ODeepLearning":[[0,1.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
+          "MaxCheckinCountDayInWeek":"-1",
+          "checkInCountTimeWindow":"6",
+          "timeWindow":"17-3"
         },
         "geometry": {
-            "type": "Point",
-            "coordinates": [-104.98689115047450, 39.747924136466561]
+          "type": "Point",
+          "coordinates": [-115.118,36.0184]
         }
-    }
+      }
     ]
-};
+  };
  * http://wiki.fasterxml.com/JacksonInFiveMinutes
  * 
  * there are 18 states info in the Yelp Dataset:
@@ -68,18 +84,21 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
 
   private void queryDB(String State, String Hour, String Week) throws SQLException {
     preparedStatement = connect.prepareStatement(
-      "SELECT Businesses.*, Business_checkin.`Count`, Business_checkin.`Hour`,  Business_checkin.`Week` " 
-          +"FROM  Businesses INNER JOIN Business_checkin "
+      "SELECT Businesses.*, Checkin.`CheckinTimeWindowArray`, Checkin.`MaxCheckinCountDayInWeek`, CheckinPredicted.`CheckinTimeWindowArrayPredictedXGBoost`, CheckinPredicted.`CheckinTimeWindowArrayPredictedRandomForest`, CheckinPredicted.`CheckinTimeWindowArrayPredictedH2ODeepLearning`, Business_checkin.`HourWeekTimeWindow`, Business_checkin.`Hour`, Business_checkin.`Week`, Business_checkin.`Count` " 
+          +"FROM  Businesses LEFT JOIN Checkin "
+          +"ON Businesses.`BusinessId` = Checkin.`BusinessId` "
+          +"LEFT JOIN CheckinPredicted "
+          +"ON Businesses.`BusinessId` = CheckinPredicted.`BusinessId` "
+          +"LEFT JOIN Business_checkin "
           +"ON Businesses.`BusinessId` = Business_checkin.`BusinessId` "
           +"WHERE Businesses.`State` = ? "
           +"AND Business_checkin.`Hour` = ? AND Business_checkin.`Week` = ?");
     preparedStatement.setString(1, State);
     preparedStatement.setString(2, Hour);
     preparedStatement.setString(3, Week);
-    // System.out.println("------"+preparedStatement.toString());
+    //System.out.println("------"+preparedStatement.toString());
 
     resultSet = preparedStatement.executeQuery();
-
   }
 
   public void generateGeoJSON(String State, String Hour, String Week) throws Exception {
@@ -95,12 +114,18 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
     while (resultSet.next()) {
 
       GeoJSONBusinessFeatureProperties geoJsonFeatureProp = new GeoJSONBusinessFeatureProperties();
+      geoJsonFeatureProp.setBusinessId(resultSet.getString("BusinessId"));
       geoJsonFeatureProp.setBusinessName(resultSet.getString("Name"));
-      geoJsonFeatureProp.setBusinessCategories(resultSet.getString("Category"));
       geoJsonFeatureProp.setBusinessAddress(resultSet.getString("FullAddress"));
+      geoJsonFeatureProp.setBusinessCategories(resultSet.getString("Category"));
+      geoJsonFeatureProp.setDayInWeekCount(resultSet.getString("CheckinTimeWindowArray"));
+      geoJsonFeatureProp.setDayInWeekCountPredictedProbXGBoost(resultSet.getString("CheckinTimeWindowArrayPredictedXGBoost"));
+      geoJsonFeatureProp.setDayInWeekCountPredictedProbRandomForest(resultSet.getString("CheckinTimeWindowArrayPredictedRandomForest"));
+      geoJsonFeatureProp.setDayInWeekCountPredictedProbH2ODeepLearning(resultSet.getString("CheckinTimeWindowArrayPredictedH2ODeepLearning"));
+      geoJsonFeatureProp.setMaxCheckinCountDayInWeek(resultSet.getString("MaxCheckinCountDayInWeek"));
       geoJsonFeatureProp.setCheckInCountTimeWindow(resultSet.getString("Count"));
       geoJsonFeatureProp.setTimeWindow(resultSet.getString("Hour")+":"+resultSet.getString("Week"));
-      // System.out.println("geoJsonFeatureProp: "+geoJsonFeatureProp.toString());
+      //System.out.println("geoJsonFeatureProp: "+geoJsonFeatureProp.toString());
 
       GeoJSONBusinessFeatureGeometry geoJsonFeatureGeo = new GeoJSONBusinessFeatureGeometry();
       geoJsonFeatureGeo.setType("Point");
@@ -132,12 +157,8 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
       // save generated GeoJSON file on local machine
       /*
        * Do this later for demo only
-      ObjectMapper businessFeatureClctnMapper = new ObjectMapper();
-      businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/json/businessFeatureClctn"
-        +"_"+State
-        +"_"+Hour
-        +"_"+Week
-        +".json"), businessFeatureClctn);
+      if (State.equals("NV")&&Hour.equals("13")&&Week.equals("5")) {
+      }
        */
 
       // save generated GeoJSON file to Redis in-memory database 
@@ -145,12 +166,19 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
       String businessFeatureClctnJson = ow.writeValueAsString(businessFeatureClctn);
       jedis.set("businessGeoJSON"+"_"+State+"_"+Hour+"_"+weekAry[Integer.valueOf(Week)], businessFeatureClctnJson);
       //System.out.println("businessGeoJSON"+"_"+State+"_"+Hour+"_"+weekAry[Integer.valueOf(Week)]+":"+jedis.get("businessGeoJSON"+"_"+State+"_"+Hour+"_"+weekAry[Integer.valueOf(Week)]));
+      
+      ObjectMapper businessFeatureClctnMapper = new ObjectMapper();
+      businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/json/businessGeoJSON"
+          +"_"+State
+          +"_"+Hour
+          +"_"+weekAry[Integer.valueOf(Week)]
+          +".json"), businessFeatureClctn);
 
       // Statistics
       System.out.println(State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
       if (numBsnsInStateTimeWindow==8889) {
-        this.logWriter.println("\n"+State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
         /*
+        this.logWriter.println("\n"+State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
         businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/json/businessFeatureClctn"
             +"_"+State
             +"_"+Hour
@@ -202,15 +230,6 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
     String logFilePath = "src/main/resources/yelp-dataset/log_mysql_properties_yelp_academic_dataset.txt";
     String businessFilePath = "src/main/resources/yelp-dataset/yelp_academic_dataset_business.json";
     String checkinFilePath = "src/main/resources/yelp-dataset/yelp_academic_dataset_checkin.json";
-
-    // save data to MySQL
-    DataStoreMySQLByPropertiesBatchSQL dsMysqlPropBatch = new DataStoreMySQLByPropertiesBatchSQL(
-      logFilePath, businessFilePath, checkinFilePath);
-
-    boolean saveData2DB = false;  //@@@
-    if (saveData2DB) {
-      dsMysqlPropBatch.run();
-    }
 
     // Query MySQL and generate GeoJSON
     QueryMySQLGenerateGeoJSONByProperties gnrtGeoJSON = new QueryMySQLGenerateGeoJSONByProperties(
