@@ -72,9 +72,12 @@ var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLab
   } else if (axisColorTag=="XGBoost") {
     xAxisColor='x axisXGBoost';
     yAxisColor='y axisXGBoost';
-  } else if (axisColorTag=="NeuralNetworks") {
-    xAxisColor='x axisNeuralNetworks';
-    yAxisColor='y axisNeuralNetworks';
+  } else if (axisColorTag=="RandomForest") {
+    xAxisColor='x axisRandomForest';
+    yAxisColor='y axisRandomForest';
+  } else if (axisColorTag=="H2ODeepLearning") {
+    xAxisColor='x axisH2ODeepLearning';
+    yAxisColor='y axisH2ODeepLearning';
   }
 
   g.append('path')
@@ -176,22 +179,27 @@ var drawLineGraph = function(containerHeight, containerWidth, data, yLabel, xLab
   });
 };
 
-function showDayInWeekCountChartWithoutML(data) {
-  //var data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
-  data = JSON.parse(data);
-  $("#chartGraphJS").empty();
-  drawLineGraph(380, 400, data, "History Check-in Count", "Day in Week", "withoutML");
-}
-
 function showDayInWeekCountChartXGBoost(data) {
   data = JSON.parse(data);
   $("#chartGraphJS").empty();
   drawLineGraph(380, 400, data, "XGBoost Prob", "Day in Week", "XGBoost");
 }
 
-function showDayInWeekCountNeuralNetworks(data) {
-  data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
-  //data = JSON.parse(data);
+function showDayInWeekCountRandomForest(data) {
+  data = JSON.parse(data);
   $("#chartGraphJS").empty();
-  drawLineGraph(380, 400, data, "Neural Networks Prob", "Day in Week", "NeuralNetworks");
+  drawLineGraph(380, 400, data, "Random Forest Prob", "Day in Week", "RandomForest");
+}
+
+function showDayInWeekCountH2ODeepLearning(data) {
+  data = JSON.parse(data);
+  $("#chartGraphJS").empty();
+  drawLineGraph(380, 400, data, "H2O Deep Learning Prob", "Day in Week", "H2ODeepLearning");
+}
+
+function showDayInWeekCountChartWithoutML(data) {
+  //var data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
+  data = JSON.parse(data);
+  $("#chartGraphJS").empty();
+  drawLineGraph(380, 400, data, "History Check-in Count", "Day in Week", "withoutML");
 }

@@ -50,7 +50,7 @@ public class YelpDataProcessing {
     // Since pmml doesn't support XGBoost so far, we can't transfer XGBoost Model to PMML and thus can't use Cascading Pattern right now
     // therefore these three steps should be run separately
     // in step 2, we need to run R script in R IDE like RStudio
-    int step = 0;
+    int step = 3;
     switch(step) {
       case 1: 
         // Step 1: save data to DB and generate ML Data Set
@@ -58,9 +58,9 @@ public class YelpDataProcessing {
         yelpDP.generateMLDataSet();
         break;
       case 2: 
-        // Step 2: train XGBoost in R 
-        // cascading pattern (Sadly pmml doesn't contain XGBoost so far)
-        System.out.println("Step 2: train XGBoost in R IDE");
+        // Step 2: train XGBoost & Random Forest & H2O Deep Learning in R IDE
+        // cascading pattern (Sadly pmml doesn't contain XGBoost and h2o.deeplearning so far)
+        System.out.println("Step 2: train XGBoost & Random Forest & H2O Deep Learning in R IDE");
         break;
       case 3: 
         // Step 3: generate GeoJSON

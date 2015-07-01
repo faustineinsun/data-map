@@ -34,19 +34,34 @@ chartGraphStyle {
   fill: SandyBrown;
 }
 
-.axisNeuralNetworks path,
-.axisNeuralNetworks line {
+.axisRandomForest path,
+.axisRandomForest line {
   fill: none;
   stroke: LightSeaGreen;
   shape-rendering: crispEdges;
 }
 
-.x.axisNeuralNetworks {
+.x.axisRandomForest {
   fill: LightCoral;
 }
 
-.y.axisNeuralNetworks {
+.y.axisRandomForest {
   fill: LightCoral;
+}
+
+.axisH2ODeepLearning path,
+.axisH2ODeepLearning line {
+  fill: none;
+  stroke: LightSeaGreen;
+  shape-rendering: crispEdges;
+}
+
+.x.axisH2ODeepLearning {
+  fill: MediumVioletRed;
+}
+
+.y.axisH2ODeepLearning {
+  fill: MediumVioletRed;
 }
 
 .line {

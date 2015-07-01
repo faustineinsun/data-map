@@ -10,7 +10,9 @@ public class GeoJSONBusinessFeatureProperties {
   private String businessAddress;
   private String businessCategories;
   private String dayInWeekCount;
-  private String dayInWeekCountPredictedProb;
+  private String dayInWeekCountPredictedProbXGBoost;
+  private String dayInWeekCountPredictedProbRandomForest;
+  private String dayInWeekCountPredictedProbH2ODeepLearning;
   private String maxCheckinCountDayInWeek;
   private String checkInCountTimeWindow; 
   private String timeWindow;
@@ -55,12 +57,28 @@ public class GeoJSONBusinessFeatureProperties {
     return this.dayInWeekCount; 
   }
 
-  public void setDayInWeekCountPredictedProb(String dayInWeekCountPredictedProb) {
-    this.dayInWeekCountPredictedProb = dayInWeekCountPredictedProb;
+  public void setDayInWeekCountPredictedProbXGBoost(String dayInWeekCountPredictedProbXGBoost) {
+    this.dayInWeekCountPredictedProbXGBoost = dayInWeekCountPredictedProbXGBoost;
   }
 
-  public String getDayInWeekCountPredictedProb() {
-    return this.dayInWeekCountPredictedProb; 
+  public String getDayInWeekCountPredictedProbXGBoost() {
+    return this.dayInWeekCountPredictedProbXGBoost; 
+  }
+
+  public void setDayInWeekCountPredictedProbRandomForest(String dayInWeekCountPredictedProbRandomForest) {
+    this.dayInWeekCountPredictedProbRandomForest = dayInWeekCountPredictedProbRandomForest;
+  }
+
+  public String getDayInWeekCountPredictedProbRandomForest() {
+    return this.dayInWeekCountPredictedProbRandomForest; 
+  }
+
+  public void setDayInWeekCountPredictedProbH2ODeepLearning(String dayInWeekCountPredictedProbH2ODeepLearning) {
+    this.dayInWeekCountPredictedProbH2ODeepLearning = dayInWeekCountPredictedProbH2ODeepLearning;
+  }
+
+  public String getDayInWeekCountPredictedProbH2ODeepLearning() {
+    return this.dayInWeekCountPredictedProbH2ODeepLearning; 
   }
 
   public void setMaxCheckinCountDayInWeek(String maxCheckinCountDayInWeek) {
@@ -94,7 +112,9 @@ public class GeoJSONBusinessFeatureProperties {
         + ", businessAddress: " + businessAddress 
         + ", businessCategories: " + businessCategories 
         + ", dayInWeekCount: " + dayInWeekCount 
-        + ", dayInWeekCountPredictedProb: " + dayInWeekCountPredictedProb 
+        + ", dayInWeekCountPredictedProbXGBoost: " + dayInWeekCountPredictedProbXGBoost 
+        + ", dayInWeekCountPredictedProbRandomForest: " + dayInWeekCountPredictedProbRandomForest 
+        + ", dayInWeekCountPredictedProbH2ODeepLearning: " + dayInWeekCountPredictedProbH2ODeepLearning 
         + ", maxCheckinCountDayInWeek: " + maxCheckinCountDayInWeek 
         + ", checkInCountTimeWindow: " + checkInCountTimeWindow 
         + ", timeWindow: " + timeWindow 

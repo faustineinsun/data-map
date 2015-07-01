@@ -95,7 +95,7 @@ pred = format(pred, digits=2,scientific=F) # shrink the size of submission
 pred = data.frame(allBusinessId,pred)
 
 names(pred) = c('BusinessId', paste0('DayInWeek_',0:(numberOfClasses-1)))
-write.csv(pred,file=paste(dataDir, "XGBoostModel_yelp_all.txt", sep=""), quote=FALSE,row.names=FALSE)
+write.csv(pred,file=paste(dataDir, "yelp_XGBoostModel_all.txt", sep=""), quote=FALSE,row.names=FALSE)
 
 ##### export XGBoost model to PMML
 #saveXML(pmml(bst),file=paste(dataDir, "XGBoostModel_yelpChallenge.xml", sep="/"))

@@ -212,7 +212,7 @@ bottomtext {
 }
 
 
-.showNeuralNetworksProbButton {
+.showRandomForestProbButton {
   top: 7%;
   right: 425px;
   position: fixed;
@@ -231,15 +231,42 @@ bottomtext {
 	padding:5px 7px;
 	text-decoration:none;
 }
-.showNeuralNetworksProbButton:hover {
+.showRandomForestProbButton:hover {
 	background-color:transparent;
 }
-.showNeuralNetworksProbButton:active {
+.showRandomForestProbButton:active {
+}
+
+
+
+.showH2ODeepLearningProbButton {
+  top: 12%;
+  right: 425px;
+  position: fixed;
+	-moz-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	-webkit-box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	box-shadow: 1px -2px 5px 3px LightSeaGreen;
+	background-color:transparent;
+	-moz-border-radius:11px;
+	-webkit-border-radius:11px;
+	border-radius:11px;
+	display:inline-block;
+	cursor:pointer;
+	color:MediumVioletRed;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	padding:5px 7px;
+	text-decoration:none;
+}
+.showH2ODeepLearningProbButton:hover {
+	background-color:transparent;
+}
+.showH2ODeepLearningProbButton:active {
 }
 
 
 .withoutMLButton {
-  top: 12%;
+  top: 17%;
   right: 425px;
   position: fixed;
 	-moz-box-shadow: 1px -2px 5px 3px LightSeaGreen;

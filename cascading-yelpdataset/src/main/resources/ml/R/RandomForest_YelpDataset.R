@@ -12,6 +12,7 @@ df_test <- read.csv(paste(dataDir, "business_categories_maxCount_test.csv", sep=
 allData <- read.csv(paste(dataDir, "business_categories_maxCount_all.csv", sep=""))
 
 train = df_train[, -1]
+numberOfClasses = 7
 
 # train model
 
@@ -28,8 +29,9 @@ varImpPlot(fit)
 predict <- predict(fit,allData,type="prob")
 result <- data.frame(id = allData$BusinessId, predict)
 
+names(result) = c('BusinessId', paste0('DayInWeek_',0:(numberOfClasses-1)))
 # save result to file
-write.csv(result, file = paste(dataDir, "rf_yelp_all.txt", sep=""), row.names = FALSE)
+write.csv(result, file = paste(dataDir, "yelp_RandomForest_all.txt", sep=""), quote=FALSE,row.names=FALSE)
 
 # get pmml file
 saveXML(pmml(fit), file="/Users/feiyu/workspace/data-map/cascading-yelpdataset/src/main/resources/ml/rf_yelpChallenge.xml")

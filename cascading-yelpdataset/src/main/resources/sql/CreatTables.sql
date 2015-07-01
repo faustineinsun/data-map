@@ -25,7 +25,9 @@ CREATE TABLE IF NOT EXISTS Checkin(BusinessId VARCHAR(255) PRIMARY KEY,
     MaxCheckinCountDayInWeek VARCHAR(2))
     ENGINE=InnoDB;
 CREATE TABLE IF NOT EXISTS CheckinPredicted(BusinessId VARCHAR(255) PRIMARY KEY, 
-    CheckinTimeWindowArrayPredicted MEDIUMTEXT)
+    CheckinTimeWindowArrayPredictedXGBoost MEDIUMTEXT,
+    CheckinTimeWindowArrayPredictedRandomForest MEDIUMTEXT,
+    CheckinTimeWindowArrayPredictedH2ODeepLearning MEDIUMTEXT)
     ENGINE=InnoDB;
 CREATE TABLE IF NOT EXISTS CheckinTimeWindow(HourWeekTimeWindow VARCHAR(255) PRIMARY KEY) ENGINE=InnoDB;
 CREATE TABLE IF NOT EXISTS Business_Checkin(id INT NOT NULL AUTO_INCREMENT,

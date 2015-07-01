@@ -40,9 +40,10 @@ var highlightStyle = {
 
 var isWithoutML = false;
 var isXGBoost = false;
-var isNeuralNetworks = false;
+var isRandomForest = false;
+var isH2ODeepLearning = false;
 
-var curDataWithoutML, curDataXGBoost, curDataNeuralNetworks;
+var curDataWithoutML, curDataXGBoost, curDataRandomForest, curDataH2ODeepLearning;
 
 var onEachFeature = function(feature, layer) {
   // mouseover and mouseout
@@ -75,19 +76,23 @@ var onEachFeature = function(feature, layer) {
       $("#showDayInWeekCountCategory").text("Category: "+ feature.properties.businessCategories);
 
       curDataWithoutML = feature.properties.dayInWeekCount;
-      curDataXGBoost = feature.properties.dayInWeekCountPredictedProb;
-      curDataNeuralNetworks = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
-      //console.log("Status: "+isWithoutML+" "+isXGBoost+" "+isNeuralNetworks);
+      curDataXGBoost = feature.properties.dayInWeekCountPredictedProbXGBoost;
+      curDataRandomForest = feature.properties.dayInWeekCountPredictedProbRandomForest;
+      curDataH2ODeepLearning = feature.properties.dayInWeekCountPredictedProbH2ODeepLearning;
+
       var data;
       if (isWithoutML) {
         data = feature.properties.dayInWeekCount;
         showDayInWeekCountChartWithoutML(data);
       } else if (isXGBoost) {
-        data = feature.properties.dayInWeekCountPredictedProb;
+        data = feature.properties.dayInWeekCountPredictedProbXGBoost;
         showDayInWeekCountChartXGBoost(data);
-      } else if (isNeuralNetworks) {
-        data = [[0,9],[1,3],[3,5],[4,7],[5,3],[6,0]];
-        showDayInWeekCountNeuralNetworks(data);
+      } else if (isRandomForest) {
+        data = feature.properties.dayInWeekCountPredictedProbRandomForest;
+        showDayInWeekCountRandomForest(data);
+      } else if (isH2ODeepLearning) {
+        data = feature.properties.dayInWeekCountPredictedProbH2ODeepLearning;
+        showDayInWeekCountH2ODeepLearning(data);
       } else {
         data = feature.properties.dayInWeekCount;
         showDayInWeekCountChartWithoutML(data);
@@ -157,7 +162,9 @@ function showYelpDataGeoJSONOverlay(geojsonfile, stateTextContent) {
           "businessAddress": "\"7210 S Durango Dr\\nSouthwest\\nLas Vegas, NV 89113\"",
           "businessCategories": "[\"Burgers\",\"Fast Food\",\"Sandwiches\",\"Restaurants\"]",
           "dayInWeekCount":[[0,9],[1,3],[2,100],[3,5],[4,7],[5,3],[6,0]],
-          "dayInWeekCountPredictedProb":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
+          "dayInWeekCountPredictedProbXGBoost":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,2.13550],[5,0.38106],[6,0.08028]],
+          "dayInWeekCountPredictedProbRandomForest":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
+          "dayInWeekCountPredictedProbH2ODeepLearning":[[0,0.03828],[1,0.05920],[2,1.04781],[3,0.08197],[4,0.29545],[5,0.40551],[6,0.07179]],
           "MaxCheckinCountDayInWeek":"2",
           "checkInCountTimeWindow":"6",
           "timeWindow":"17-3"
@@ -174,7 +181,9 @@ function showYelpDataGeoJSONOverlay(geojsonfile, stateTextContent) {
           "businessAddress": "\"9400 S  Eastern Ave\\nSte 106A\\nSoutheast\\nLas Vegas, NV 89123\"",
           "businessCategories": "[\"Food\",\"Ethnic Food\",\"Specialty Food\"]",
           "dayInWeekCount":[[0,900],[1,3000],[2,100],[3,5000],[4,700],[5,30],[6,5000]],
-          "dayInWeekCountPredictedProb":[[0,0.03828],[1,0.05920],[2,0.04781],[3,0.08197],[4,0.29545],[5,0.40551],[6,0.07179]],
+          "dayInWeekCountPredictedProbXGBoost":[[0,0.03828],[1,0.05920],[2,0.04781],[3,0.08197],[4,0.29545],[5,1.40551],[6,0.07179]],
+          "dayInWeekCountPredictedProbRandomForest":[[0,0.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
+          "dayInWeekCountPredictedProbH2ODeepLearning":[[0,1.06256],[1,0.09311],[2,0.11299],[3,0.13450],[4,0.13550],[5,0.38106],[6,0.08028]],
           "MaxCheckinCountDayInWeek":"-1",
           "checkInCountTimeWindow":"6",
           "timeWindow":"17-3"

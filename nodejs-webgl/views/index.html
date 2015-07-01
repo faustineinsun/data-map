@@ -212,33 +212,48 @@ $("#backToState").on("click", function() {
 </script>
 
 <a href="#" id = "XGBoostProbChart" class="showXGBoostProbButton">XGBoost &#9658;</a>
-<a href="#" id = "NeuralNetworksProbChart" class="showNeuralNetworksProbButton">Neural Networks &#9658;</a>
+<a href="#" id = "RandomForestProbChart" class="showRandomForestProbButton">Random Forest &#9658;</a>
+<a href="#" id = "H2ODeepLearningProbChart" class="showH2ODeepLearningProbButton">H2O Deep Learning &#9658;</a>
 <a href="#" id = "withoutML" class="withoutMLButton">WithoutML &#9658;</a>
 <script type="text/javascript">
 $("#XGBoostProbChart").on("click", function() {
   isWithoutML = false;
   isXGBoost = true;
-  isNeuralNetworks = false;
+  isRandomForest = false;
+  isH2ODeepLearning = false;
   if (typeof curDataXGBoost === "undefined") {
     $("#showDayInWeekCountName").html("<div style='color:SandyBrown'>Please place your mouse over the points on the map</div>");
   } else {
     showDayInWeekCountChartXGBoost(curDataXGBoost)
   }
 });
-$("#NeuralNetworksProbChart").on("click", function() {
+$("#RandomForestProbChart").on("click", function() {
   isWithoutML = false;
   isXGBoost = false;
-  isNeuralNetworks = true;
-  if (typeof curDataNeuralNetworks === "undefined") {
+  isRandomForest = true;
+  isH2ODeepLearning = false;
+  if (typeof curDataRandomForest === "undefined") {
     $("#showDayInWeekCountName").html("<div style='color:LightCoral'>Please place your mouse over the points on the map</div>");
   } else {
-    showDayInWeekCountNeuralNetworks(curDataNeuralNetworks)
+    showDayInWeekCountRandomForest(curDataRandomForest)
+  }
+});
+$("#H2ODeepLearningProbChart").on("click", function() {
+  isWithoutML = false;
+  isXGBoost = false;
+  isRandomForest = false;
+  isH2ODeepLearning = true;
+  if (typeof curDataH2ODeepLearning === "undefined") {
+    $("#showDayInWeekCountName").html("<div style='color:MediumVioletRed'>Please place your mouse over the points on the map</div>");
+  } else {
+    showDayInWeekCountH2ODeepLearning(curDataH2ODeepLearning)
   }
 });
 $("#withoutML").on("click", function() {
   isWithoutML = true;
   isXGBoost = false;
-  isNeuralNetworks = false;
+  isRandomForest = false;
+  isH2ODeepLearning = false;
   if (typeof curDataWithoutML === "undefined") {
     $("#showDayInWeekCountName").text("Please place your mouse over the points on the map");
   } else {
