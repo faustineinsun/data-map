@@ -2,6 +2,11 @@
 # install.packages("h2o")
 # http://h2o.ai/blog/2015/02/deep-learning-performance/
 
+# 4 hidden layers
+#MSE: (Extract with `h2o.mse`) 0.604482
+#R^2: (Extract with `h2o.r2`) 0.8091318
+#Logloss: (Extract with `h2o.logloss`) 1.673903
+
 rm(list = ls())
 setwd("/Users/feiyu/workspace/data-map/cascading-yelpdataset/src/main/resources/ml/R")
 library(h2o)
@@ -17,7 +22,7 @@ test <- read.csv("../dataset/yelp-dataset/business_categories_maxCount_all.csv")
 nColOutput = ncol(output)
 nColTrainWithoutLabel = ncol(train) -1
 nomalizeValueLamda = 0.375
-nIt = 10
+nIt = 25
 
 output[,2:nColOutput] <- 0
 test <- test[, 1:nColTrainWithoutLabel]
@@ -41,15 +46,15 @@ for(i in 1:nIt){
                             training_frame=train.hex,
                             activation="RectifierWithDropout",
                             classification_stop = -1,
-                            hidden=c(1024,526,1024),
-                            hidden_dropout_ratio=c(0.5,0.5,0.5),
+                            hidden=c(1024,526,1024,526),
+                            hidden_dropout_ratio=c(0.5,0.5,0.5,0.5),
                             input_dropout_ratio=0.05,
                             epochs=50,
                             l1=1e-5,
                             l2=1e-5,
                             rho=0.99,
                             epsilon=1e-8,
-                            train_samples_per_iteration=1000,
+                            train_samples_per_iteration=2000,
                             max_w2=10,
                             seed=1)
   output[,2:nColOutput] <- output[,2:nColOutput] + as.data.frame(h2o.predict(model,test.hex))[,2:nColOutput]

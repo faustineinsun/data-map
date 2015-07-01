@@ -20,7 +20,8 @@ numberOfClasses = 7
 # so that the program will produce the same result when it runs each time
 set.seed(931) 
 
-fit <- randomForest(as.factor(MaxCheckinDayInWeek)~., data=train, importance=TRUE, ntree=100)
+# ntree=500~1000
+fit <- randomForest(as.factor(MaxCheckinDayInWeek)~., data=train, importance=TRUE, ntree=600)
 
 # plot model result
 varImpPlot(fit)

@@ -157,21 +157,22 @@ public class QueryMySQLGenerateGeoJSONByProperties extends DataStoreMySQL implem
       // save generated GeoJSON file on local machine
       /*
        * Do this later for demo only
-       */
       if (State.equals("NV")&&Hour.equals("13")&&Week.equals("5")) {
-        ObjectMapper businessFeatureClctnMapper = new ObjectMapper();
-        businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/json/businessFeatureClctn"
-            +"_"+State
-            +"_"+Hour
-            +"_"+Week
-            +".json"), businessFeatureClctn);
       }
+       */
 
       // save generated GeoJSON file to Redis in-memory database 
       ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
       String businessFeatureClctnJson = ow.writeValueAsString(businessFeatureClctn);
       jedis.set("businessGeoJSON"+"_"+State+"_"+Hour+"_"+weekAry[Integer.valueOf(Week)], businessFeatureClctnJson);
       //System.out.println("businessGeoJSON"+"_"+State+"_"+Hour+"_"+weekAry[Integer.valueOf(Week)]+":"+jedis.get("businessGeoJSON"+"_"+State+"_"+Hour+"_"+weekAry[Integer.valueOf(Week)]));
+      
+      ObjectMapper businessFeatureClctnMapper = new ObjectMapper();
+      businessFeatureClctnMapper.writeValue(new File("src/main/resources/yelp-dataset/json/businessGeoJSON"
+          +"_"+State
+          +"_"+Hour
+          +"_"+weekAry[Integer.valueOf(Week)]
+          +".json"), businessFeatureClctn);
 
       // Statistics
       System.out.println(State+":"+Hour+":"+ Week +" -> "+numBsnsInStateTimeWindow);
